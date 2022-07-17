@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface TrainingRepo extends JpaRepository<Training, Long> {
 
-    Optional<Training> findAllByName(String name);
+    Optional<Training> findByName(String name);
 }
