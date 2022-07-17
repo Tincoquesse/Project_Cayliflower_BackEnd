@@ -9,13 +9,15 @@ public class Subcategory {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private String name;
     @OneToMany
     private List<Training> trainings;
 
     public Subcategory() {
     }
 
-    public Subcategory(List<Training> trainings) {
+    public Subcategory(String name, List<Training> trainings) {
+        this.name = name;
         this.trainings = trainings;
 
     }
@@ -36,4 +38,11 @@ public class Subcategory {
         this.trainings = trainings;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
