@@ -8,12 +8,14 @@ import java.util.List;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id;
+    private Long id;
 
+    private String description;
     @OneToMany
-    List<Subcategory> subcategories;
+    private List<Subcategory> subcategories;
 
-    public Category(List<Subcategory> subcategories) {
+    public Category(String description, List<Subcategory> subcategories) {
+        this.description = description;
         this.subcategories = subcategories;
     }
 
@@ -34,5 +36,13 @@ public class Category {
 
     public void setSubcategories(List<Subcategory> subcategories) {
         this.subcategories = subcategories;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

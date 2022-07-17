@@ -13,17 +13,16 @@ public class Training {
     private String description;
     private BigDecimal price;
 
-    @ManyToOne
-    private Subcategory subcategory;
+    private int duration;
 
     public Training() {
     }
 
-    public Training(String name, String description, BigDecimal price, Subcategory subcategory) {
+    public Training(String name, String description, BigDecimal price, int duration) {
         this.name = name;
         this.description = description;
         this.price = price;
-        this.subcategory = subcategory;
+        this.duration = duration;
     }
 
     public Long getId() {
@@ -58,11 +57,11 @@ public class Training {
         this.price = price;
     }
 
-    public Subcategory getSubcategory() {
-        return subcategory;
+    public int getDuration() {
+        return duration;
     }
 
-    public void setSubcategory(Subcategory subcategory) {
-        this.subcategory = subcategory;
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 }

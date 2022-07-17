@@ -12,15 +12,12 @@ public class Subcategory {
     @OneToMany
     private List<Training> trainings;
 
-    @ManyToOne
-    private Category category;
-
     public Subcategory() {
     }
 
-    public Subcategory(List<Training> trainings, Category category) {
+    public Subcategory(List<Training> trainings) {
         this.trainings = trainings;
-        this.category = category;
+
     }
 
     public Long getId() {
@@ -39,11 +36,4 @@ public class Subcategory {
         this.trainings = trainings;
     }
 
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
 }
