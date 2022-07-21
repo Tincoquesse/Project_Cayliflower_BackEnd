@@ -5,7 +5,6 @@ import com.inqoo.project_cayliflower_backend.model.CategoryDTO;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
 
 import java.util.Collections;
@@ -15,7 +14,7 @@ public class ProjectCauliflowerBackEndApplication {
 
     CauliflowerRestController controller;
 
-    public ProjectCayliflowerBackEndApplication(CauliflowerRestController controller) {
+    public ProjectCauliflowerBackEndApplication(CauliflowerRestController controller) {
         this.controller = controller;
     }
 
