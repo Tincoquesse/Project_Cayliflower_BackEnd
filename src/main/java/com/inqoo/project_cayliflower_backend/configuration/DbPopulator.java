@@ -21,7 +21,6 @@ public class DbPopulator {
         this.controller = controller;
     }
 
-    @Bean
     @EventListener(ApplicationReadyEvent.class)
     public void doSomethingAfterStartup() {
         controller.addCategory(new CategoryDTO("IT", "IT Categoty", Collections.emptyList()));
