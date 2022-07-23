@@ -11,7 +11,7 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(value = {NameAlreadyTakenException.class})
     public ResponseEntity<String> handleNotFound(Exception exception){
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.IM_USED);
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = {CategoryNotExistingException.class})
