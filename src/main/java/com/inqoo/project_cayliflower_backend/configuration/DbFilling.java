@@ -4,7 +4,6 @@ package com.inqoo.project_cayliflower_backend.configuration;
 import com.inqoo.project_cayliflower_backend.controller.CauliflowerRestController;
 import com.inqoo.project_cayliflower_backend.model.CategoryDTO;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -13,11 +12,11 @@ import java.util.Collections;
 
 @Component
 @Profile("prod")
-public class DbPopulator {
+public class DbFilling {
 
     CauliflowerRestController controller;
 
-    public DbPopulator(CauliflowerRestController controller) {
+    public DbFilling(CauliflowerRestController controller) {
         this.controller = controller;
     }
 
