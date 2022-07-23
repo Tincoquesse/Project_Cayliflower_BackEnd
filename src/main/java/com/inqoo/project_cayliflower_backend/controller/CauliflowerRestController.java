@@ -1,4 +1,4 @@
-package com.inqoo.project_cayliflower_backend.configuration.controller;
+package com.inqoo.project_cayliflower_backend.controller;
 
 import com.inqoo.project_cayliflower_backend.model.Category;
 import com.inqoo.project_cayliflower_backend.model.CategoryDTO;
