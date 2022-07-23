@@ -50,7 +50,7 @@ class CauliflowerRestControllerTest {
         String contentAsString = response.getContentAsString();
         List<CategoryDTO> categories = Arrays.asList(objectMapper.readValue(contentAsString, CategoryDTO[].class));
 
-        assertThat(categories.size()).isEqualTo(2);
+        assertThat(categories.size()).isEqualTo(1);
     }
 
     @Test
