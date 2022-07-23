@@ -61,6 +61,9 @@ public class CauliflowerService {
     }
 
     public List<SubcategoryDTO> getSubcategoriesFromCategory(String categoryName){
+        if (categoryRepo.findByName(categoryName).isEmpty()){
+            throw new CategoryNotExistingException();
+        }
         Category category = categoryRepo.findByName(categoryName).orElseThrow();
         ArrayList<SubcategoryDTO> subcategoryDTOS = new ArrayList<>();
         category.getSubcategories().stream()
