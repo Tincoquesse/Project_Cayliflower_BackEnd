@@ -10,11 +10,14 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private String name;
+
     private String description;
     @OneToMany
     private List<Subcategory> subcategories;
 
-    public Category(String description, List<Subcategory> subcategories) {
+    public Category(String name, String description, List<Subcategory> subcategories) {
+        this.name = name;
         this.description = description;
         this.subcategories = subcategories;
     }
@@ -44,5 +47,13 @@ public class Category {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
