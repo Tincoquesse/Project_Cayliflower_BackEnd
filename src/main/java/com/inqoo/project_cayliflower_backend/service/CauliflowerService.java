@@ -63,10 +63,10 @@ public class CauliflowerService {
             throw new CategoryNotExistingException();
         }
         Category category = categoryRepo.findByName(categoryName).orElseThrow();
-        ArrayList<SubcategoryDTO> subcategoryDTOS = new ArrayList<>();
+        ArrayList<SubcategoryDTO> subcategoryDTOs = new ArrayList<>();
         category.getSubcategories().stream()
-                .forEach(subcategory ->subcategoryDTOS.add(SubcategoryMapper.fromEntity(subcategory)) );
-        return subcategoryDTOS;
+                .forEach(subcategory ->subcategoryDTOs.add(SubcategoryMapper.fromEntity(subcategory)) );
+        return subcategoryDTOs;
     }
 
     public TrainingDTO addTraining(TrainingDTO trainingDTO, String subcategoryName) {
@@ -82,5 +82,16 @@ public class CauliflowerService {
         subcategory.getTrainings().add(save);
         subcategoryRepo.save(subcategory);
         return TrainingMapper.fromEntity(save);
+    }
+
+    public List<TrainingDTO> getTrainingsFromSubcategory(String subcategoryName) {
+        if (subcategoryRepo.findByName(subcategoryName).isEmpty()){
+            throw new SubcategoryNotExistingException();
+        }
+        Subcategory subcategory = subcategoryRepo.findByName(subcategoryName).orElseThrow();
+        ArrayList<TrainingDTO> trainingDTOs = new ArrayList<>();
+        subcategory.getTrainings().stream()
+                .forEach(training ->trainingDTOs.add(TrainingMapper.fromEntity(training)));
+        return trainingDTOs;
     }
 }

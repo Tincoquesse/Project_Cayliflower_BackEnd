@@ -45,4 +45,9 @@ public class CauliflowerRestController {
         return ResponseEntity.ok().body(cauliflowerService.getSubcategoriesFromCategory(category));
     }
 
+    @GetMapping("/training/get/{subcategory}")
+    public  ResponseEntity<List<TrainingDTO>> getTrainingsFromSubcategories(@PathVariable String subcategory){
+        return ResponseEntity.ok().body(cauliflowerService.getTrainingsFromSubcategory(subcategory));
+    }
+
 }
