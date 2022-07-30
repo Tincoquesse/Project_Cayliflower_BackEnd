@@ -2,10 +2,8 @@ package com.inqoo.project_cayliflower_backend.service;
 
 import com.inqoo.project_cayliflower_backend.exceptions.CategoryNotExistingException;
 import com.inqoo.project_cayliflower_backend.exceptions.NameAlreadyTakenException;
-import com.inqoo.project_cayliflower_backend.model.Category;
-import com.inqoo.project_cayliflower_backend.model.CategoryDTO;
-import com.inqoo.project_cayliflower_backend.model.Subcategory;
-import com.inqoo.project_cayliflower_backend.model.SubcategoryDTO;
+import com.inqoo.project_cayliflower_backend.exceptions.SubcategoryNotExistingException;
+import com.inqoo.project_cayliflower_backend.model.*;
 import com.inqoo.project_cayliflower_backend.repository.CategoryRepo;
 import com.inqoo.project_cayliflower_backend.repository.SubcategoryRepo;
 import com.inqoo.project_cayliflower_backend.repository.TrainingRepo;
@@ -69,5 +67,20 @@ public class CauliflowerService {
         category.getSubcategories().stream()
                 .forEach(subcategory ->subcategoryDTOS.add(SubcategoryMapper.fromEntity(subcategory)) );
         return subcategoryDTOS;
+    }
+
+    public TrainingDTO addTraining(TrainingDTO trainingDTO, String subcategoryName) {
+        if (subcategoryRepo.findByName(subcategoryName).isEmpty()){
+            throw new SubcategoryNotExistingException();
+        }
+        Subcategory subcategory = subcategoryRepo.findByName(subcategoryName).orElseThrow();
+        if (subcategory.getTrainings().stream()
+                .anyMatch(training -> training.getName().equalsIgnoreCase(trainingDTO.getName()))){
+            throw new NameAlreadyTakenException();
+        }
+        Training save = trainingRepo.save(TrainingMapper.fromDTO(trainingDTO));
+        subcategory.getTrainings().add(save);
+        subcategoryRepo.save(subcategory);
+        return TrainingMapper.fromEntity(save);
     }
 }
