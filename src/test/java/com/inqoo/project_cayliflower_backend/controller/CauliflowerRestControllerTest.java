@@ -102,7 +102,24 @@ class CauliflowerRestControllerTest {
 
         //then
         assertThat(status).isEqualTo(201);
-        assertThat(trainerRepo.findAll().size()).isEqualTo(1);
+        assertThat(trainerRepo.findByFirstNameAndLastName("Mariusz", "Wariusz").get()).isNotNull();
+
+    }
+    @Test
+    public void shouldGetTrainer() throws Exception {
+        //given
+        String firstName = "Zdich";
+        String lastName = "Mnich";
+        String bio = "test";
+
+        trainerRepo.save(new Trainer(firstName, lastName, bio, Collections.emptyList()));
+        //when
+        MvcResult mvcResult = this.mockMvc.perform(get("/api/trainer")).andReturn();
+
+        //then
+        MockHttpServletResponse response = mvcResult.getResponse();
+        String contentAsString = response.getContentAsString();
+        List<TrainerDTO> trainers = Arrays.asList(objectMapper.readValue(contentAsString, TrainerDTO[].class));
 
     }
 //    @Test

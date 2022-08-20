@@ -50,6 +50,11 @@ public class CauliflowerRestController {
         return ResponseEntity.ok().body(cauliflowerService.getTrainingsFromSubcategory(subcategory));
     }
 
+    @GetMapping("/trainer")
+    public ResponseEntity<List<TrainerDTO>> getTrainer(){
+        return ResponseEntity.ok().body(cauliflowerService.getTrainer());
+    }
+
     @PostMapping("/trainer")
 //    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<TrainerDTO> addTrainer(@RequestBody TrainerDTO trainerDTO) {

@@ -23,11 +23,14 @@ public class CauliflowerService {
 
     private final TrainerRepo trainerRepo;
 
-    public CauliflowerService(TrainingRepo trainingRepo, SubcategoryRepo subcategoryRepo, CategoryRepo categoryRepo, TrainerRepo trainerRepo) {
+    private final TrainerMapper trainerMapper;
+
+    public CauliflowerService(TrainingRepo trainingRepo, SubcategoryRepo subcategoryRepo, CategoryRepo categoryRepo, TrainerRepo trainerRepo, TrainerMapper trainerMapper) {
         this.trainingRepo = trainingRepo;
         this.subcategoryRepo = subcategoryRepo;
         this.categoryRepo = categoryRepo;
         this.trainerRepo = trainerRepo;
+        this.trainerMapper = trainerMapper;
     }
 
     public CategoryDTO addCategory(CategoryDTO categoryDTO) {
@@ -104,5 +107,10 @@ public class CauliflowerService {
             Trainer save = trainerRepo.save(TrainerMapper.fromDTO(trainerDTO));
             return TrainerMapper.fromEntity(save);
         }
+    }
+    public List<TrainerDTO> getTrainer(){
+
+
+
     }
 }
