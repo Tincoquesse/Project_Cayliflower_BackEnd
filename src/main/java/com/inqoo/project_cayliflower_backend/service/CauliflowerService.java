@@ -23,14 +23,11 @@ public class CauliflowerService {
 
     private final TrainerRepo trainerRepo;
 
-    private final TrainerMapper trainerMapper;
-
-    public CauliflowerService(TrainingRepo trainingRepo, SubcategoryRepo subcategoryRepo, CategoryRepo categoryRepo, TrainerRepo trainerRepo, TrainerMapper trainerMapper) {
+    public CauliflowerService(TrainingRepo trainingRepo, SubcategoryRepo subcategoryRepo, CategoryRepo categoryRepo, TrainerRepo trainerRepo) {
         this.trainingRepo = trainingRepo;
         this.subcategoryRepo = subcategoryRepo;
         this.categoryRepo = categoryRepo;
         this.trainerRepo = trainerRepo;
-        this.trainerMapper = trainerMapper;
     }
 
     public CategoryDTO addCategory(CategoryDTO categoryDTO) {
@@ -109,8 +106,9 @@ public class CauliflowerService {
         }
     }
     public List<TrainerDTO> getTrainer(){
-
-
-
+        List<Trainer> trainer = trainerRepo.findAll();
+       return trainer.stream()
+               .map(TrainerMapper::fromEntity)
+               .collect(Collectors.toList());
     }
 }
