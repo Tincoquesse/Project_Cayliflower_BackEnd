@@ -18,13 +18,13 @@ public class CauliflowerService {
     private final TrainingRepo trainingRepo;
     private final SubcategoryRepo subcategoryRepo;
     private final CategoryRepo categoryRepo;
-    private final TrainerRepo trainerRepo;
+    private final TrainerService trainerService;
 
-    public CauliflowerService(TrainingRepo trainingRepo, SubcategoryRepo subcategoryRepo, CategoryRepo categoryRepo, TrainerRepo trainerRepo) {
+    public CauliflowerService(TrainingRepo trainingRepo, SubcategoryRepo subcategoryRepo, CategoryRepo categoryRepo, TrainerService trainerService) {
         this.trainingRepo = trainingRepo;
         this.subcategoryRepo = subcategoryRepo;
         this.categoryRepo = categoryRepo;
-        this.trainerRepo = trainerRepo;
+        this.trainerService = trainerService;
     }
 
     public CategoryDTO addCategory(CategoryDTO categoryDTO) {
@@ -94,32 +94,16 @@ public class CauliflowerService {
         return trainingDTOs;
     }
 
-    public TrainerDTO addTrainer(TrainerDTO trainerDTO) {
-        if (trainerRepo.findByFirstNameAndLastName(trainerDTO.getFirstName(), trainerDTO.getLastName()).isPresent()) {
-            throw new NameAlreadyTakenException();
-        } else {
-            Trainer save = trainerRepo.save(TrainerMapper.fromDTO(trainerDTO));
-            return TrainerMapper.fromEntity(save);
-        }
-    }
-
-    public List<TrainerDTO> getTrainers() {
-        List<Trainer> trainer = trainerRepo.findAll();
-        return trainer.stream()
-                .map(TrainerMapper::fromEntity)
-                .collect(Collectors.toList());
-    }
 
     public void assignToTraining(TrainerToTrainingAssigmentDTO assigmentDTO) {
         Training training = trainingRepo.findByName(assigmentDTO.getTrainingName())
                 .orElseThrow(() ->
                         new TrainingNotExistingException());
-        Trainer trainer = trainerRepo.findByFirstNameAndLastName(assigmentDTO.getTrainerFirstName(), assigmentDTO.getTrainerLastName())
+        Trainer trainer = trainerService.getTrainerFromRepo(assigmentDTO.getTrainerFirstName(), assigmentDTO.getTrainerLastName())
                 .orElseThrow(() ->
                         new TrainerNotExistingException());
         training.getTrainers().add(trainer);
         trainingRepo.save(training);
-
     }
 }
 

@@ -2,6 +2,7 @@ package com.inqoo.project_cayliflower_backend.controller;
 
 import com.inqoo.project_cayliflower_backend.model.*;
 import com.inqoo.project_cayliflower_backend.service.CauliflowerService;
+import com.inqoo.project_cayliflower_backend.service.TrainerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,9 +15,11 @@ import java.util.List;
 public class CauliflowerRestController {
 
     private final CauliflowerService cauliflowerService;
+    private final TrainerService trainerService;
 
-    public CauliflowerRestController(CauliflowerService cauliflowerService) {
+    public CauliflowerRestController(CauliflowerService cauliflowerService, TrainerService trainerService) {
         this.cauliflowerService = cauliflowerService;
+        this.trainerService = trainerService;
     }
 
     @PostMapping("/category")
@@ -51,12 +54,12 @@ public class CauliflowerRestController {
 
     @GetMapping("/trainers")
     public ResponseEntity<List<TrainerDTO>> getTrainer() {
-        return ResponseEntity.ok().body(cauliflowerService.getTrainers());
+        return ResponseEntity.ok().body(trainerService.getTrainers());
     }
 
     @PostMapping("/trainer")
     public ResponseEntity<TrainerDTO> addTrainer(@RequestBody TrainerDTO trainerDTO) {
-        return ResponseEntity.created(URI.create("/api/trainer")).body(cauliflowerService.addTrainer(trainerDTO));
+        return ResponseEntity.created(URI.create("/api/trainer")).body(trainerService.addTrainer(trainerDTO));
     }
 
     @PostMapping("/assigment")
