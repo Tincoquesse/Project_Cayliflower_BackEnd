@@ -6,10 +6,10 @@ import com.inqoo.project_cayliflower_backend.model.TrainingDTO;
 public class TrainingMapper {
 
     public static Training fromDTO(TrainingDTO trainingDTO) {
-        return new Training(trainingDTO.getName(), trainingDTO.getDescription(), trainingDTO.getPrice(), trainingDTO.getDuration());
+        return new Training(trainingDTO.getName(), trainingDTO.getDescription(), trainingDTO.getPrice(), trainingDTO.getDuration(), trainingDTO.getTrainers());
     }
 
     public static TrainingDTO fromEntity(Training training) {
-        return new TrainingDTO(training.getName(), training.getDescription(), training.getPrice(), training.getDuration());
+        return new TrainingDTO(training.getName(), training.getDescription(), training.getPrice(), training.getDuration(), training.getTrainers());
     }
 }

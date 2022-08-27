@@ -56,9 +56,13 @@ public class CauliflowerRestController {
     }
 
     @PostMapping("/trainer")
-//    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<TrainerDTO> addTrainer(@RequestBody TrainerDTO trainerDTO) {
         return ResponseEntity.created(URI.create("/api/trainer")).body(cauliflowerService.addTrainer(trainerDTO));
     }
-
+    @PostMapping("/assigment")
+    public ResponseEntity<Void> assignTrainerToTraining(@RequestBody TrainerToTrainingAssigmentDTO assigmentDTO) {
+        this.cauliflowerService.assignToTraining(assigmentDTO);
+        return ResponseEntity.ok().build();
+    }
 }
+

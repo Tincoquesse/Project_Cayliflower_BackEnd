@@ -1,18 +1,17 @@
 package com.inqoo.project_cayliflower_backend.model;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class TrainingDTO {
     private String name;
     private String description;
     private BigDecimal price;
-
     private int duration;
+    private List<Trainer> trainers;
 
-    public TrainingDTO() {
-    }
 
-    public TrainingDTO(String name, String description, BigDecimal price, int duration) {
+    public TrainingDTO(String name, String description, BigDecimal price, int duration, List<Trainer> trainers) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -49,5 +48,13 @@ public class TrainingDTO {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public List<Trainer> getTrainers() {
+        return trainers;
+    }
+
+    public void setTrainers(List<Trainer> trainers) {
+        this.trainers = trainers;
     }
 }

@@ -1,8 +1,6 @@
 package com.inqoo.project_cayliflower_backend.service;
 
-import com.inqoo.project_cayliflower_backend.exceptions.CategoryNotExistingException;
-import com.inqoo.project_cayliflower_backend.exceptions.NameAlreadyTakenException;
-import com.inqoo.project_cayliflower_backend.exceptions.SubcategoryNotExistingException;
+import com.inqoo.project_cayliflower_backend.exceptions.*;
 import com.inqoo.project_cayliflower_backend.model.*;
 import com.inqoo.project_cayliflower_backend.repository.CategoryRepo;
 import com.inqoo.project_cayliflower_backend.repository.SubcategoryRepo;
@@ -105,10 +103,24 @@ public class CauliflowerService {
             return TrainerMapper.fromEntity(save);
         }
     }
-    public List<TrainerDTO> getTrainer(){
+
+    public List<TrainerDTO> getTrainer() {
         List<Trainer> trainer = trainerRepo.findAll();
-       return trainer.stream()
-               .map(TrainerMapper::fromEntity)
-               .collect(Collectors.toList());
+        return trainer.stream()
+                .map(TrainerMapper::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    public void assignToTraining(TrainerToTrainingAssigmentDTO assigmentDTO) {
+        Training training = trainingRepo.findByName(assigmentDTO.getTrainingName())
+                .orElseThrow(() ->
+                        new TrainingNotExistingException());
+        Trainer trainer = trainerRepo.findByFirstNameAndLastName(assigmentDTO.getTrainerFirstName(), assigmentDTO.getTrainerLastName())
+                .orElseThrow(() ->
+                        new TrainerNotExistingException());
+        training.getTrainers().add(trainer);
+        trainingRepo.save(training);
+
     }
 }
+

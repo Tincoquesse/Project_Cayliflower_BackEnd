@@ -1,11 +1,5 @@
 package com.inqoo.project_cayliflower_backend.controller;
 
-import static org.assertj.core.api.Assertions.in;
-import static org.springframework.http.MediaType.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.inqoo.project_cayliflower_backend.model.*;
 import com.inqoo.project_cayliflower_backend.repository.CategoryRepo;
@@ -15,17 +9,21 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 
 @SpringBootTest
@@ -106,6 +104,7 @@ class CauliflowerRestControllerTest {
         assertThat(trainerRepo.findByFirstNameAndLastName("Mariusz", "Wariusz").get()).isNotNull();
 
     }
+
     @Test
     public void shouldGetTrainer() throws Exception {
         //given
@@ -123,16 +122,37 @@ class CauliflowerRestControllerTest {
         List<TrainerDTO> trainers = Arrays.asList(objectMapper.readValue(contentAsString, TrainerDTO[].class));
 
     }
-//    @Test
-//    public void shouldAddTrainerToTraining(){
-//        //given
-//        trainingRepo.save(new Training("Basics", "test", new BigDecimal(50), 3));
-//        trainerRepo.save(new Trainer("Zbyszek", "Jabłko", "test", Collections.emptyList()));
-//
-//        //when
-//
-//        //then
-//
-//    }
 
+    @Test
+    void shouldAddTrainerToTraining() throws Exception {
+        //given
+        String firstName = "Zdich";
+        String lastName = "Mnich";
+        String bio = "test";
+
+        trainerRepo.save(new Trainer(firstName, lastName, bio, new ArrayList<>()));
+
+        trainingRepo.save(new Training("testTraining",
+                "tesDescription",
+                new BigDecimal(23),
+                24,
+                new ArrayList<>()));
+
+        TrainerToTrainingAssigmentDTO trainerToTrainingAssigmentDTO =
+                new TrainerToTrainingAssigmentDTO("testTraining", firstName, lastName);
+        String json = objectMapper.writeValueAsString(trainerToTrainingAssigmentDTO);
+
+        //when
+        MvcResult mvcResult = this.mockMvc.perform(post("/api/assigment")
+                        .contentType(APPLICATION_JSON)
+                        .content(json))
+                .andReturn();
+
+        int status = mvcResult.getResponse().getStatus();
+
+        //then
+        assertThat(status).isEqualTo(200);
+        assertThat(trainingRepo.findByName("testTraining").get().getTrainers().size()).isEqualTo(1);
+
+    }
 }

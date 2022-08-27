@@ -10,16 +10,24 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class RestExceptionHandler {
 
     @ExceptionHandler(value = {NameAlreadyTakenException.class})
-    public ResponseEntity<String> handleNotFound(Exception exception){
+    public ResponseEntity<String> handleNotFound(Exception exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = {CategoryNotExistingException.class})
-    public ResponseEntity<String> handleCategoryNotFound(Exception exception){
-        return new ResponseEntity<>(exception.getMessage(),HttpStatus.NOT_FOUND);
+    public ResponseEntity<String> handleCategoryNotFound(Exception exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
-
+    @ExceptionHandler(value = {TrainingNotExistingException.class})
+    public ResponseEntity<String> handleTrainingNotFound(Exception exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(value = {TrainerNotExistingException.class})
+    public ResponseEntity<String> handleTrainerNotFound(Exception exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+    }
+}
 
 
