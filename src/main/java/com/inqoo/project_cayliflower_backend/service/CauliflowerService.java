@@ -1,18 +1,13 @@
 package com.inqoo.project_cayliflower_backend.service;
 
-import com.inqoo.project_cayliflower_backend.exceptions.CategoryNotExistingException;
-import com.inqoo.project_cayliflower_backend.exceptions.NameAlreadyTakenException;
-import com.inqoo.project_cayliflower_backend.model.Category;
-import com.inqoo.project_cayliflower_backend.model.CategoryDTO;
-import com.inqoo.project_cayliflower_backend.model.Subcategory;
-import com.inqoo.project_cayliflower_backend.model.SubcategoryDTO;
+import com.inqoo.project_cayliflower_backend.exceptions.*;
+import com.inqoo.project_cayliflower_backend.model.*;
 import com.inqoo.project_cayliflower_backend.repository.CategoryRepo;
 import com.inqoo.project_cayliflower_backend.repository.SubcategoryRepo;
+import com.inqoo.project_cayliflower_backend.repository.TrainerRepo;
 import com.inqoo.project_cayliflower_backend.repository.TrainingRepo;
-import com.sun.xml.bind.v2.TODO;
 import org.springframework.stereotype.Service;
 
-import javax.naming.NameAlreadyBoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,19 +18,21 @@ public class CauliflowerService {
     private final TrainingRepo trainingRepo;
     private final SubcategoryRepo subcategoryRepo;
     private final CategoryRepo categoryRepo;
+    private final TrainerRepo trainerRepo;
 
-    public CauliflowerService(TrainingRepo trainingRepo, SubcategoryRepo subcategoryRepo, CategoryRepo categoryRepo) {
+    public CauliflowerService(TrainingRepo trainingRepo, SubcategoryRepo subcategoryRepo, CategoryRepo categoryRepo, TrainerRepo trainerRepo) {
         this.trainingRepo = trainingRepo;
         this.subcategoryRepo = subcategoryRepo;
         this.categoryRepo = categoryRepo;
+        this.trainerRepo = trainerRepo;
     }
 
-    public CategoryDTO addCategory(CategoryDTO categoryDTO){
-        if (categoryRepo.findByName(categoryDTO.getName()).isPresent()){
+    public CategoryDTO addCategory(CategoryDTO categoryDTO) {
+        if (categoryRepo.findByName(categoryDTO.getName()).isPresent()) {
             throw new NameAlreadyTakenException();
         } else {
-        Category save = categoryRepo.save(CategoryMapper.fromDTO(categoryDTO));
-        return CategoryMapper.fromEntity(save);
+            Category save = categoryRepo.save(CategoryMapper.fromDTO(categoryDTO));
+            return CategoryMapper.fromEntity(save);
         }
     }
 
@@ -45,13 +42,13 @@ public class CauliflowerService {
                 .collect(Collectors.toList());
     }
 
-    public SubcategoryDTO addSubcategory(SubcategoryDTO subcategoryDTO, String categoryName){
-        if (categoryRepo.findByName(categoryName).isEmpty()){
+    public SubcategoryDTO addSubcategory(SubcategoryDTO subcategoryDTO, String categoryName) {
+        if (categoryRepo.findByName(categoryName).isEmpty()) {
             throw new CategoryNotExistingException();
         }
         Category category = categoryRepo.findByName(categoryName).orElseThrow();
-        if(category.getSubcategories().stream()
-                .anyMatch(subcategory -> subcategory.getName().equalsIgnoreCase(subcategoryDTO.getName()))){
+        if (category.getSubcategories().stream()
+                .anyMatch(subcategory -> subcategory.getName().equalsIgnoreCase(subcategoryDTO.getName()))) {
             throw new NameAlreadyTakenException();
         }
         Subcategory save = subcategoryRepo.save(SubcategoryMapper.fromDTO(subcategoryDTO));
@@ -60,14 +57,69 @@ public class CauliflowerService {
         return SubcategoryMapper.fromEntity(save);
     }
 
-    public List<SubcategoryDTO> getSubcategoriesFromCategory(String categoryName){
-        if (categoryRepo.findByName(categoryName).isEmpty()){
+    public List<SubcategoryDTO> getSubcategoriesFromCategory(String categoryName) {
+        if (categoryRepo.findByName(categoryName).isEmpty()) {
             throw new CategoryNotExistingException();
         }
         Category category = categoryRepo.findByName(categoryName).orElseThrow();
-        ArrayList<SubcategoryDTO> subcategoryDTOS = new ArrayList<>();
+        ArrayList<SubcategoryDTO> subcategoryDTOs = new ArrayList<>();
         category.getSubcategories().stream()
-                .forEach(subcategory ->subcategoryDTOS.add(SubcategoryMapper.fromEntity(subcategory)) );
-        return subcategoryDTOS;
+                .forEach(subcategory -> subcategoryDTOs.add(SubcategoryMapper.fromEntity(subcategory)));
+        return subcategoryDTOs;
+    }
+
+    public TrainingDTO addTraining(TrainingDTO trainingDTO, String subcategoryName) {
+        if (subcategoryRepo.findByName(subcategoryName).isEmpty()) {
+            throw new SubcategoryNotExistingException();
+        }
+        Subcategory subcategory = subcategoryRepo.findByName(subcategoryName).orElseThrow();
+        if (subcategory.getTrainings().stream()
+                .anyMatch(training -> training.getName().equalsIgnoreCase(trainingDTO.getName()))) {
+            throw new NameAlreadyTakenException();
+        }
+        Training save = trainingRepo.save(TrainingMapper.fromDTO(trainingDTO));
+        subcategory.getTrainings().add(save);
+        subcategoryRepo.save(subcategory);
+        return TrainingMapper.fromEntity(save);
+    }
+
+    public List<TrainingDTO> getTrainingsFromSubcategory(String subcategoryName) {
+        if (subcategoryRepo.findByName(subcategoryName).isEmpty()) {
+            throw new SubcategoryNotExistingException();
+        }
+        Subcategory subcategory = subcategoryRepo.findByName(subcategoryName).orElseThrow();
+        ArrayList<TrainingDTO> trainingDTOs = new ArrayList<>();
+        subcategory.getTrainings().stream()
+                .forEach(training -> trainingDTOs.add(TrainingMapper.fromEntity(training)));
+        return trainingDTOs;
+    }
+
+    public TrainerDTO addTrainer(TrainerDTO trainerDTO) {
+        if (trainerRepo.findByFirstNameAndLastName(trainerDTO.getFirstName(), trainerDTO.getLastName()).isPresent()) {
+            throw new NameAlreadyTakenException();
+        } else {
+            Trainer save = trainerRepo.save(TrainerMapper.fromDTO(trainerDTO));
+            return TrainerMapper.fromEntity(save);
+        }
+    }
+
+    public List<TrainerDTO> getTrainers() {
+        List<Trainer> trainer = trainerRepo.findAll();
+        return trainer.stream()
+                .map(TrainerMapper::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    public void assignToTraining(TrainerToTrainingAssigmentDTO assigmentDTO) {
+        Training training = trainingRepo.findByName(assigmentDTO.getTrainingName())
+                .orElseThrow(() ->
+                        new TrainingNotExistingException());
+        Trainer trainer = trainerRepo.findByFirstNameAndLastName(assigmentDTO.getTrainerFirstName(), assigmentDTO.getTrainerLastName())
+                .orElseThrow(() ->
+                        new TrainerNotExistingException());
+        training.getTrainers().add(trainer);
+        trainingRepo.save(training);
+
     }
 }
+

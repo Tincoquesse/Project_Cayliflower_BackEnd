@@ -2,6 +2,8 @@ package com.inqoo.project_cayliflower_backend.model;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -13,16 +15,20 @@ public class Training {
     private String description;
     private BigDecimal price;
 
+    @ManyToMany
+    private Set<Trainer> trainers;
+
     private int duration;
 
     public Training() {
     }
 
-    public Training(String name, String description, BigDecimal price, int duration) {
+    public Training(String name, String description, BigDecimal price, int duration, Set<Trainer> trainers) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.duration = duration;
+        this.trainers = trainers;
     }
 
     public Long getId() {
@@ -63,5 +69,13 @@ public class Training {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public Set<Trainer> getTrainers() {
+        return trainers;
+    }
+
+    public void setTrainers(Set<Trainer> trainers) {
+        this.trainers = trainers;
     }
 }

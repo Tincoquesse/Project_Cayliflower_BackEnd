@@ -22,10 +22,9 @@ public class DbFilling {
 
     @EventListener(ApplicationReadyEvent.class)
     public void doSomethingAfterStartup() {
-        controller.addCategory(new CategoryDTO("IT", "IT Categoty", Collections.emptyList()));
-        controller.addCategory(new CategoryDTO("Sales", "Sales Categoty", Collections.emptyList()));
-        controller.addCategory(new CategoryDTO("Marketing", "Marketing Categoty", Collections.emptyList()));
-        controller.addCategory(new CategoryDTO("Other", "Other Categoty", Collections.emptyList()));
+        controller.addCategory(new CategoryDTO("IT", "IT Category", Collections.emptyList()));
+        controller.addCategory(new CategoryDTO("Sales", "Sales Category", Collections.emptyList()));
+        controller.addCategory(new CategoryDTO("Marketing", "Marketing Category", Collections.emptyList()));
+        controller.addCategory(new CategoryDTO("Other", "Other Category", Collections.emptyList()));
     }
-
 }
