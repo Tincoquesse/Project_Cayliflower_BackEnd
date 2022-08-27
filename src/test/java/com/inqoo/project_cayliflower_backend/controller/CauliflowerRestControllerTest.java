@@ -151,4 +151,103 @@ class CauliflowerRestControllerTest {
         assertThat(trainingRepo.findByName("testTraining").get().getTrainers().size()).isEqualTo(1);
 
     }
+
+    @Test
+    public void shouldReturnBadRequestWhenTrainingIsNotExist() throws Exception {
+        //given
+        String firstName = "Mściwój";
+        String lastName = "Kubek";
+        String bio = "test";
+
+        trainerRepo.save(new Trainer(firstName, lastName, bio, new HashSet<>()));
+
+        String name = "TestI";
+        String description = "Testowo";
+        BigDecimal price = BigDecimal.valueOf(34);
+        int duration = 5;
+
+        trainingRepo.save(new Training(name, description, price, duration, new HashSet<>()));
+
+        TrainerToTrainingAssigmentDTO trainerToTrainingAssigmentDTO =
+                new TrainerToTrainingAssigmentDTO("testII", firstName, lastName);
+        String json = objectMapper.writeValueAsString(trainerToTrainingAssigmentDTO);
+
+        //when
+        MvcResult mvcResult = this.mockMvc.perform(post("/api/assigment")
+                        .contentType(APPLICATION_JSON).content(json))
+                .andReturn();
+
+        int status = mvcResult.getResponse().getStatus();
+        //then
+        assertThat(status).isEqualTo(404);
+
+    }
+
+    @Test
+    public void shouldReturnBadRequestWhenTrainerIsNotExist() throws Exception {
+        //given
+        String firstName = "Mściwój";
+        String lastName = "Kubek";
+        String bio = "test";
+
+        trainerRepo.save(new Trainer(firstName, lastName, bio, new HashSet<>()));
+
+        String name = "TestI";
+        String description = "Testowo";
+        BigDecimal price = BigDecimal.valueOf(34);
+        int duration = 5;
+
+        trainingRepo.save(new Training(name, description, price, duration, new HashSet<>()));
+
+        TrainerToTrainingAssigmentDTO trainerToTrainingAssigmentDTO =
+                new TrainerToTrainingAssigmentDTO(name, "Franek", lastName);
+        String json = objectMapper.writeValueAsString(trainerToTrainingAssigmentDTO);
+
+        //when
+        MvcResult mvcResult = this.mockMvc.perform(post("/api/assigment")
+                        .contentType(APPLICATION_JSON).content(json))
+                .andReturn();
+
+        int status = mvcResult.getResponse().getStatus();
+        //then
+        assertThat(status).isEqualTo(404);
+
+    }
+
+    @Test
+    public void shouldReturnNameAlreadyTakenWhenTrainerIsTheSame() throws Exception {
+        //given
+        String firstName = "Zdich";
+        String lastName = "Mnich";
+        String bio = "test";
+
+        trainerRepo.save(new Trainer(firstName, lastName, bio, new HashSet<>()));
+
+        String trainingNAme = "testTraining";
+        trainingRepo.save(new Training(trainingNAme,
+                "tesDescription",
+                new BigDecimal(23),
+                24,
+                new HashSet<>()));
+
+        TrainerToTrainingAssigmentDTO trainerToTrainingAssigmentDTO =
+                new TrainerToTrainingAssigmentDTO(trainingNAme, firstName, lastName);
+        String json = objectMapper.writeValueAsString(trainerToTrainingAssigmentDTO);
+
+
+        this.mockMvc.perform(post("/api/assigment")
+                        .contentType(APPLICATION_JSON)
+                        .content(json))
+                .andReturn();
+        //when
+        MvcResult mvcResult = this.mockMvc.perform(post("/api/assigment")
+                        .contentType(APPLICATION_JSON)
+                        .content(json))
+                .andReturn();
+
+        int status = mvcResult.getResponse().getStatus();
+
+        //then
+        assertThat(status).isEqualTo(422);
+    }
 }

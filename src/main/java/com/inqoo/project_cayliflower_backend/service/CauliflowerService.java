@@ -117,7 +117,11 @@ public class CauliflowerService {
         Trainer trainer = trainerRepo.findByFirstNameAndLastName(assigmentDTO.getTrainerFirstName(), assigmentDTO.getTrainerLastName())
                 .orElseThrow(() ->
                         new TrainerNotExistingException());
-        training.getTrainers().add(trainer);
+
+        if(training.getTrainers().contains(trainer)){
+            throw new NameAlreadyTakenException();
+        }
+        training.addTrainer(trainer);
         trainingRepo.save(training);
 
     }

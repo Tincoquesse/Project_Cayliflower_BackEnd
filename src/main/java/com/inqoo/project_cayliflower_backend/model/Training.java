@@ -3,6 +3,7 @@ package com.inqoo.project_cayliflower_backend.model;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -74,8 +75,8 @@ public class Training {
     public Set<Trainer> getTrainers() {
         return trainers;
     }
-
-    public void setTrainers(Set<Trainer> trainers) {
-        this.trainers = trainers;
+    public void addTrainer(Trainer trainer) {
+        this.trainers.add(trainer);
     }
+
 }
