@@ -3,7 +3,6 @@ package com.inqoo.project_cayliflower_backend.configuration;
 
 import com.inqoo.project_cayliflower_backend.controller.CauliflowerRestController;
 import com.inqoo.project_cayliflower_backend.model.CategoryDTO;
-import com.inqoo.project_cayliflower_backend.model.SubcategoryDTO;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
@@ -27,13 +26,5 @@ public class DbFilling {
         controller.addCategory(new CategoryDTO("Sales", "Sales Category", Collections.emptyList()));
         controller.addCategory(new CategoryDTO("Marketing", "Marketing Category", Collections.emptyList()));
         controller.addCategory(new CategoryDTO("Other", "Other Category", Collections.emptyList()));
-
-
-//        controller.addSubcategory(new SubcategoryDTO("Java"), "IT");
-//        controller.addSubcategory(new SubcategoryDTO("C#"), "IT");
-//        controller.addSubcategory(new SubcategoryDTO("JavaScript"), "IT");
-//        controller.addSubcategory(new SubcategoryDTO("DevOps"), "IT");
-
     }
-
 }

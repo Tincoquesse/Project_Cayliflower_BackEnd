@@ -2,6 +2,7 @@ package com.inqoo.project_cayliflower_backend.model;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Trainer {
@@ -15,12 +16,12 @@ public class Trainer {
     private String bio;
 
     @ManyToMany
-    private List<Training> trainings;
+    private Set<Training> trainings;
 
-    public Trainer() {
+    Trainer() {
     }
 
-    public Trainer(String firstName, String lastName, String bio, List<Training> trainings) {
+    public Trainer(String firstName, String lastName, String bio, Set<Training> trainings) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.bio = bio;
@@ -51,11 +52,11 @@ public class Trainer {
         this.bio = bio;
     }
 
-    public List<Training> getTrainings() {
+    public Set<Training> getTrainings() {
         return trainings;
     }
 
-    public void setTrainings(List<Training> trainings) {
+    public void setTrainings(Set<Training> trainings) {
         this.trainings = trainings;
     }
 

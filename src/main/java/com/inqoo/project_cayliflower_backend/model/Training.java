@@ -3,6 +3,7 @@ package com.inqoo.project_cayliflower_backend.model;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -15,14 +16,14 @@ public class Training {
     private BigDecimal price;
 
     @ManyToMany
-    private List<Trainer> trainers;
+    private Set<Trainer> trainers;
 
     private int duration;
 
     public Training() {
     }
 
-    public Training(String name, String description, BigDecimal price, int duration, List<Trainer> trainers) {
+    public Training(String name, String description, BigDecimal price, int duration, Set<Trainer> trainers) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -70,11 +71,11 @@ public class Training {
         this.duration = duration;
     }
 
-    public List<Trainer> getTrainers() {
+    public Set<Trainer> getTrainers() {
         return trainers;
     }
 
-    public void setTrainers(List<Trainer> trainers) {
+    public void setTrainers(Set<Trainer> trainers) {
         this.trainers = trainers;
     }
 }

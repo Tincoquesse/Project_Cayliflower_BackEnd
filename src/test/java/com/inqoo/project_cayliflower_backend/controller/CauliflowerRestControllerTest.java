@@ -15,9 +15,9 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,19 +32,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 class CauliflowerRestControllerTest {
 
     @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
     CategoryRepo categoryRepo;
-
     @Autowired
     TrainingRepo trainingRepo;
-
     @Autowired
     TrainerRepo trainerRepo;
+    @Autowired
+    private MockMvc mockMvc;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
     public void shouldGetAllCategories() throws Exception {
@@ -53,7 +49,7 @@ class CauliflowerRestControllerTest {
         categoryRepo.save(new Category("Sales", "Sales desc", Collections.emptyList()));
 
         //WHEN
-        MvcResult mvcResult = this.mockMvc.perform(get("/api/category/all")).andReturn();
+        MvcResult mvcResult = this.mockMvc.perform(get("/api/categories")).andReturn();
 
         //THEN
         MockHttpServletResponse response = mvcResult.getResponse();
@@ -73,7 +69,7 @@ class CauliflowerRestControllerTest {
         categoryRepo.save(new Category(secondName, "Sales desc", Collections.emptyList()));
 
         //WHEN
-        MvcResult mvcResult = this.mockMvc.perform(get("/api/category/all")).andReturn();
+        MvcResult mvcResult = this.mockMvc.perform(get("/api/categories")).andReturn();
 
         //THEN
         MockHttpServletResponse response = mvcResult.getResponse();
@@ -112,9 +108,9 @@ class CauliflowerRestControllerTest {
         String lastName = "Mnich";
         String bio = "test";
 
-        trainerRepo.save(new Trainer(firstName, lastName, bio, Collections.emptyList()));
+        trainerRepo.save(new Trainer(firstName, lastName, bio, new HashSet<>()));
         //when
-        MvcResult mvcResult = this.mockMvc.perform(get("/api/trainer")).andReturn();
+        MvcResult mvcResult = this.mockMvc.perform(get("/api/trainers")).andReturn();
 
         //then
         MockHttpServletResponse response = mvcResult.getResponse();
@@ -130,13 +126,13 @@ class CauliflowerRestControllerTest {
         String lastName = "Mnich";
         String bio = "test";
 
-        trainerRepo.save(new Trainer(firstName, lastName, bio, new ArrayList<>()));
+        trainerRepo.save(new Trainer(firstName, lastName, bio, new HashSet<>()));
 
         trainingRepo.save(new Training("testTraining",
                 "tesDescription",
                 new BigDecimal(23),
                 24,
-                new ArrayList<>()));
+                new HashSet<>()));
 
         TrainerToTrainingAssigmentDTO trainerToTrainingAssigmentDTO =
                 new TrainerToTrainingAssigmentDTO("testTraining", firstName, lastName);

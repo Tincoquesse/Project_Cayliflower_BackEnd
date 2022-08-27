@@ -2,7 +2,6 @@ package com.inqoo.project_cayliflower_backend.controller;
 
 import com.inqoo.project_cayliflower_backend.model.*;
 import com.inqoo.project_cayliflower_backend.service.CauliflowerService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,45 +19,46 @@ public class CauliflowerRestController {
         this.cauliflowerService = cauliflowerService;
     }
 
-    @PostMapping("/category/add")
+    @PostMapping("/category")
     public ResponseEntity<CategoryDTO> addCategory(@RequestBody CategoryDTO categoryDTO) {
         return ResponseEntity.ok().body(cauliflowerService.addCategory(categoryDTO));
     }
 
-    @GetMapping("/category/all")
+    @GetMapping("/categories")
     public ResponseEntity<List<CategoryDTO>> getAllCategory() {
         return ResponseEntity.ok().body(cauliflowerService.getAllCategories());
     }
 
-    @PostMapping("/subcategory/add/{category}")
+    @PostMapping("/subcategory/{category}")
     public ResponseEntity<SubcategoryDTO> addSubcategory(@RequestBody SubcategoryDTO subcategoryDTO, @PathVariable String category) {
         return ResponseEntity.ok().body(cauliflowerService.addSubcategory(subcategoryDTO, category));
     }
 
-    @PostMapping("/training/add/{subcategory}")
+    @PostMapping("/training/{subcategory}")
     public ResponseEntity<TrainingDTO> addTraining(@RequestBody TrainingDTO trainingDTO, @PathVariable String subcategory) {
         return ResponseEntity.ok().body(cauliflowerService.addTraining(trainingDTO, subcategory));
     }
 
-    @GetMapping("/subcategory/get/{category}")
+    @GetMapping("/subcategory/{category}")
     public ResponseEntity<List<SubcategoryDTO>> getSubcategoriesFromCategory(@PathVariable String category) {
         return ResponseEntity.ok().body(cauliflowerService.getSubcategoriesFromCategory(category));
     }
 
-    @GetMapping("/training/get/{subcategory}")
+    @GetMapping("/training/{subcategory}")
     public ResponseEntity<List<TrainingDTO>> getTrainingsFromSubcategories(@PathVariable String subcategory) {
         return ResponseEntity.ok().body(cauliflowerService.getTrainingsFromSubcategory(subcategory));
     }
 
-    @GetMapping("/trainer")
-    public ResponseEntity<List<TrainerDTO>> getTrainer(){
-        return ResponseEntity.ok().body(cauliflowerService.getTrainer());
+    @GetMapping("/trainers")
+    public ResponseEntity<List<TrainerDTO>> getTrainer() {
+        return ResponseEntity.ok().body(cauliflowerService.getTrainers());
     }
 
     @PostMapping("/trainer")
     public ResponseEntity<TrainerDTO> addTrainer(@RequestBody TrainerDTO trainerDTO) {
         return ResponseEntity.created(URI.create("/api/trainer")).body(cauliflowerService.addTrainer(trainerDTO));
     }
+
     @PostMapping("/assigment")
     public ResponseEntity<Void> assignTrainerToTraining(@RequestBody TrainerToTrainingAssigmentDTO assigmentDTO) {
         this.cauliflowerService.assignToTraining(assigmentDTO);

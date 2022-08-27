@@ -18,7 +18,6 @@ public class CauliflowerService {
     private final TrainingRepo trainingRepo;
     private final SubcategoryRepo subcategoryRepo;
     private final CategoryRepo categoryRepo;
-
     private final TrainerRepo trainerRepo;
 
     public CauliflowerService(TrainingRepo trainingRepo, SubcategoryRepo subcategoryRepo, CategoryRepo categoryRepo, TrainerRepo trainerRepo) {
@@ -104,7 +103,7 @@ public class CauliflowerService {
         }
     }
 
-    public List<TrainerDTO> getTrainer() {
+    public List<TrainerDTO> getTrainers() {
         List<Trainer> trainer = trainerRepo.findAll();
         return trainer.stream()
                 .map(TrainerMapper::fromEntity)
