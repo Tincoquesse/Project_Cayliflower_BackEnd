@@ -32,22 +32,22 @@ public class CauliflowerRestController {
         return ResponseEntity.ok().body(cauliflowerService.getAllCategories());
     }
 
-    @PostMapping("/subcategory/{category}")
+    @PostMapping("/category/{category}/subcategory")
     public ResponseEntity<SubcategoryDTO> addSubcategory(@RequestBody SubcategoryDTO subcategoryDTO, @PathVariable String category) {
         return ResponseEntity.ok().body(cauliflowerService.addSubcategory(subcategoryDTO, category));
     }
 
-    @PostMapping("/training/{subcategory}")
+    @PostMapping("/subcategory/{subcategory}/training")
     public ResponseEntity<TrainingDTO> addTraining(@RequestBody TrainingDTO trainingDTO, @PathVariable String subcategory) {
         return ResponseEntity.ok().body(cauliflowerService.addTraining(trainingDTO, subcategory));
     }
 
-    @GetMapping("/subcategory/{category}")
+    @GetMapping("/category/{category}/subcategories")
     public ResponseEntity<List<SubcategoryDTO>> getSubcategoriesFromCategory(@PathVariable String category) {
         return ResponseEntity.ok().body(cauliflowerService.getSubcategoriesFromCategory(category));
     }
 
-    @GetMapping("/training/{subcategory}")
+    @GetMapping("/subcategory/{subcategory}/trainings")
     public ResponseEntity<List<TrainingDTO>> getTrainingsFromSubcategories(@PathVariable String subcategory) {
         return ResponseEntity.ok().body(cauliflowerService.getTrainingsFromSubcategory(subcategory));
     }
