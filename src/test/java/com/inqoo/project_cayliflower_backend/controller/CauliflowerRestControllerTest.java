@@ -1,6 +1,5 @@
 package com.inqoo.project_cayliflower_backend.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.inqoo.project_cayliflower_backend.model.*;
 import com.inqoo.project_cayliflower_backend.repository.CategoryRepo;
@@ -12,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -263,6 +261,6 @@ class CauliflowerRestControllerTest {
         cauliflowerService.addCategory(new CategoryDTO(categoryName, "it_descriotion", new ArrayList<>()));
         cauliflowerService.addSubcategory(new SubcategoryDTO(subcategoryName), categoryName);
         cauliflowerService.addTraining(new TrainingDTO(trainingName,"Spring_description",
-                new BigDecimal(210),2, new HashSet<>()), subcategoryName);
+                new BigDecimal(210),2, new HashSet<>(), new HashSet<>()), subcategoryName);
     }
 }
