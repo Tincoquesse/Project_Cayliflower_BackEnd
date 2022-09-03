@@ -21,17 +21,20 @@ public class TrainerService {
     }
 
     public TrainerDTO addTrainer(TrainerDTO trainerDTO) {
-        if (trainerRepo.findByFirstNameAndLastName(trainerDTO.getFirstName(), trainerDTO.getLastName()).isPresent()) {
+        if (trainerIsPresent(trainerDTO)) {
             throw new NameAlreadyTakenException();
         } else {
-            Trainer save = trainerRepo.save(TrainerMapper.fromDTO(trainerDTO));
-            return TrainerMapper.fromEntity(save);
+            Trainer savedTrainer = trainerRepo.save(TrainerMapper.fromDTO(trainerDTO));
+            return TrainerMapper.fromEntity(savedTrainer);
         }
     }
 
+    private boolean trainerIsPresent(TrainerDTO trainerDTO) {
+        return trainerRepo.findByFirstNameAndLastName(trainerDTO.getFirstName(), trainerDTO.getLastName()).isPresent();
+    }
+
     public List<TrainerDTO> getTrainers() {
-        List<Trainer> trainer = trainerRepo.findAll();
-        return trainer.stream()
+        return trainerRepo.findAll().stream()
                 .map(TrainerMapper::fromEntity)
                 .collect(Collectors.toList());
     }

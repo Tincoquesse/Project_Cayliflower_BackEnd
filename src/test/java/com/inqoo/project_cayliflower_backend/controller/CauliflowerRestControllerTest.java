@@ -42,6 +42,23 @@ class CauliflowerRestControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    private void saveTrainerToDatabase() {
+        String firstName = "Zdzich";
+        String lastName = "Mnich";
+        String bio = "test";
+
+        trainerRepo.save(new Trainer(firstName, lastName, bio, new HashSet<>()));
+    }
+
+    private void saveTrainingToDatabase() {
+        String name = "TestI";
+        String description = "Testowo";
+        BigDecimal price = BigDecimal.valueOf(34);
+        int duration = 5;
+
+        trainingRepo.save(new Training(name, description, price, duration, new HashSet<>()));
+    }
+
     @Test
     public void shouldGetAllCategories() throws Exception {
         //GIVEN
@@ -104,11 +121,7 @@ class CauliflowerRestControllerTest {
     @Test
     public void shouldGetTrainer() throws Exception {
         //given
-        String firstName = "Zdich";
-        String lastName = "Mnich";
-        String bio = "test";
-
-        trainerRepo.save(new Trainer(firstName, lastName, bio, new HashSet<>()));
+        saveTrainerToDatabase();
         //when
         MvcResult mvcResult = this.mockMvc.perform(get("/api/trainers")).andReturn();
 
@@ -122,11 +135,7 @@ class CauliflowerRestControllerTest {
     @Test
     void shouldAddTrainerToTraining() throws Exception {
         //given
-        String firstName = "Zdich";
-        String lastName = "Mnich";
-        String bio = "test";
-
-        trainerRepo.save(new Trainer(firstName, lastName, bio, new HashSet<>()));
+        saveTrainerToDatabase();
 
         trainingRepo.save(new Training("testTraining",
                 "tesDescription",
@@ -135,7 +144,7 @@ class CauliflowerRestControllerTest {
                 new HashSet<>()));
 
         TrainerToTrainingAssigmentDTO trainerToTrainingAssigmentDTO =
-                new TrainerToTrainingAssigmentDTO("testTraining", firstName, lastName);
+                new TrainerToTrainingAssigmentDTO("testTraining", "Zdzich", "Mnich");
         String json = objectMapper.writeValueAsString(trainerToTrainingAssigmentDTO);
 
         //when
@@ -155,21 +164,12 @@ class CauliflowerRestControllerTest {
     @Test
     public void shouldReturnBadRequestWhenTrainingIsNotExist() throws Exception {
         //given
-        String firstName = "Mściwój";
-        String lastName = "Kubek";
-        String bio = "test";
+        saveTrainerToDatabase();
 
-        trainerRepo.save(new Trainer(firstName, lastName, bio, new HashSet<>()));
-
-        String name = "TestI";
-        String description = "Testowo";
-        BigDecimal price = BigDecimal.valueOf(34);
-        int duration = 5;
-
-        trainingRepo.save(new Training(name, description, price, duration, new HashSet<>()));
+        saveTrainingToDatabase();
 
         TrainerToTrainingAssigmentDTO trainerToTrainingAssigmentDTO =
-                new TrainerToTrainingAssigmentDTO("testII", firstName, lastName);
+                new TrainerToTrainingAssigmentDTO("testII", "Mściwój", "Kubek");
         String json = objectMapper.writeValueAsString(trainerToTrainingAssigmentDTO);
 
         //when
@@ -186,21 +186,12 @@ class CauliflowerRestControllerTest {
     @Test
     public void shouldReturnBadRequestWhenTrainerIsNotExist() throws Exception {
         //given
-        String firstName = "Mściwój";
-        String lastName = "Kubek";
-        String bio = "test";
+        saveTrainerToDatabase();
 
-        trainerRepo.save(new Trainer(firstName, lastName, bio, new HashSet<>()));
-
-        String name = "TestI";
-        String description = "Testowo";
-        BigDecimal price = BigDecimal.valueOf(34);
-        int duration = 5;
-
-        trainingRepo.save(new Training(name, description, price, duration, new HashSet<>()));
+        saveTrainingToDatabase();
 
         TrainerToTrainingAssigmentDTO trainerToTrainingAssigmentDTO =
-                new TrainerToTrainingAssigmentDTO(name, "Franek", lastName);
+                new TrainerToTrainingAssigmentDTO("TestI", "Franek", "Janek");
         String json = objectMapper.writeValueAsString(trainerToTrainingAssigmentDTO);
 
         //when
@@ -217,11 +208,7 @@ class CauliflowerRestControllerTest {
     @Test
     public void shouldReturnNameAlreadyTakenWhenTrainerIsTheSame() throws Exception {
         //given
-        String firstName = "Zdich";
-        String lastName = "Mnich";
-        String bio = "test";
-
-        trainerRepo.save(new Trainer(firstName, lastName, bio, new HashSet<>()));
+        saveTrainerToDatabase();
 
         String trainingNAme = "testTraining";
         trainingRepo.save(new Training(trainingNAme,
@@ -231,7 +218,7 @@ class CauliflowerRestControllerTest {
                 new HashSet<>()));
 
         TrainerToTrainingAssigmentDTO trainerToTrainingAssigmentDTO =
-                new TrainerToTrainingAssigmentDTO(trainingNAme, firstName, lastName);
+                new TrainerToTrainingAssigmentDTO(trainingNAme, "Zdzich", "Mnich");
         String json = objectMapper.writeValueAsString(trainerToTrainingAssigmentDTO);
 
 
