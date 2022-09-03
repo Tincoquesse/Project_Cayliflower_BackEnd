@@ -37,16 +37,8 @@ public class Category {
         return subcategories;
     }
 
-    public void setSubcategories(List<Subcategory> subcategories) {
-        this.subcategories = subcategories;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getName() {
@@ -55,5 +47,9 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void addSubcategory(Subcategory save) {
+        subcategories.add(save);
     }
 }

@@ -8,11 +8,13 @@ import com.inqoo.project_cayliflower_backend.repository.TrainerRepo;
 import com.inqoo.project_cayliflower_backend.repository.TrainingRepo;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class CauliflowerService {
 
     private final TrainingRepo trainingRepo;
@@ -52,7 +54,7 @@ public class CauliflowerService {
             throw new NameAlreadyTakenException();
         }
         Subcategory save = subcategoryRepo.save(SubcategoryMapper.fromDTO(subcategoryDTO));
-        category.getSubcategories().add(save);
+        category.addSubcategory(save); //getSubcategories().add(save);
         categoryRepo.save(category);
         return SubcategoryMapper.fromEntity(save);
     }
@@ -78,7 +80,7 @@ public class CauliflowerService {
             throw new NameAlreadyTakenException();
         }
         Training save = trainingRepo.save(TrainingMapper.fromDTO(trainingDTO));
-        subcategory.getTrainings().add(save);
+        subcategory.addTraining(save);
         subcategoryRepo.save(subcategory);
         return TrainingMapper.fromEntity(save);
     }

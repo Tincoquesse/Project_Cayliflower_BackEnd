@@ -1,24 +1,25 @@
 package com.inqoo.project_cayliflower_backend.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.inqoo.project_cayliflower_backend.model.*;
 import com.inqoo.project_cayliflower_backend.repository.CategoryRepo;
 import com.inqoo.project_cayliflower_backend.repository.TrainerRepo;
 import com.inqoo.project_cayliflower_backend.repository.TrainingRepo;
+import com.inqoo.project_cayliflower_backend.service.CauliflowerService;
+import com.inqoo.project_cayliflower_backend.service.TrainerService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -42,11 +43,17 @@ class CauliflowerRestControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private void addTrainerToDatabase(String firstName, String lastName) {
+    @Autowired
+    private CauliflowerService cauliflowerService;
+
+    @Autowired
+    private TrainerService trainerService;
+
+    private void aTrainer(String firstName, String lastName) {
         trainerRepo.save(new Trainer(firstName, lastName, "Bio", new HashSet<>()));
     }
 
-    private void addTrainingToDatabase(String name) {
+    private void aTraining(String name) {
         String description = "Testowo";
         BigDecimal price = BigDecimal.valueOf(34);
         int duration = 5;
@@ -116,7 +123,7 @@ class CauliflowerRestControllerTest {
     @Test
     public void shouldGetTrainer() throws Exception {
         //given
-        addTrainerToDatabase("Zdzich", "Mnich");
+        aTrainer("Zdzich", "Mnich");
         //when
         MvcResult mvcResult = this.mockMvc.perform(get("/api/trainers")).andReturn();
 
@@ -130,7 +137,7 @@ class CauliflowerRestControllerTest {
     @Test
     void shouldAddTrainerToTraining() throws Exception {
         //given
-        addTrainerToDatabase("Zdzich", "Mnich");
+        aTrainer("Zdzich", "Mnich");
 
         trainingRepo.save(new Training("testTraining",
                 "tesDescription",
@@ -159,9 +166,9 @@ class CauliflowerRestControllerTest {
     @Test
     public void shouldReturnBadRequestWhenTrainingIsNotExist() throws Exception {
         //given
-        addTrainerToDatabase("Zdzich", "Mnich");
+        aTrainer("Zdzich", "Mnich");
 
-        addTrainingToDatabase("TestI");
+        aTraining("TestI");
 
         TrainerToTrainingAssigmentDTO trainerToTrainingAssigmentDTO =
                 new TrainerToTrainingAssigmentDTO("testII", "Mściwój", "Kubek");
@@ -181,9 +188,9 @@ class CauliflowerRestControllerTest {
     @Test
     public void shouldReturnBadRequestWhenTrainerIsNotExist() throws Exception {
         //given
-        addTrainerToDatabase("Zdzich", "Mnich");
+        aTrainer("Zdzich", "Mnich");
 
-        addTrainingToDatabase("TestI");
+        aTraining("TestI");
 
         TrainerToTrainingAssigmentDTO trainerToTrainingAssigmentDTO =
                 new TrainerToTrainingAssigmentDTO("TestI", "Franek", "Janek");
@@ -203,9 +210,9 @@ class CauliflowerRestControllerTest {
     @Test
     public void shouldReturnNameAlreadyTakenWhenTrainerIsTheSame() throws Exception {
         //given
-        addTrainerToDatabase("Zdzich","Mnich");
+        aTrainer("Zdzich","Mnich");
 
-        addTrainingToDatabase("TestI");
+        aTraining("TestI");
 
         TrainerToTrainingAssigmentDTO trainerToTrainingAssigmentDTO =
                 new TrainerToTrainingAssigmentDTO("TestI", "Zdzich", "Mnich");
@@ -224,5 +231,38 @@ class CauliflowerRestControllerTest {
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andReturn();
+    }
+    @Test
+    public void shouldPrepareOffer() throws Exception {
+        //given
+        String trainingName = "Spring";
+        aTraining("IT", "Java", trainingName);
+        // and
+        trainerAssingnedToTraining("Wiesiek", "Malina", trainingName);
+        OfferPreparationRequestDTO offerPreparationRequestDTO = new OfferPreparationRequestDTO(trainingName,
+                "Java","Wiesiek", "Malina");
+        String json = objectMapper.writeValueAsString(offerPreparationRequestDTO);
+
+        //when
+        MvcResult mvcResult = mockMvc.perform(post("/api/offerPreparationRequest")
+                .contentType(APPLICATION_JSON).content(json)).andReturn();
+        String contentAsString = mvcResult.getResponse().getContentAsString();
+        int status = mvcResult.getResponse().getStatus();
+
+        //then
+        assertThat(status).isEqualTo(200);
+    }
+
+    private void trainerAssingnedToTraining(String firstName, String lastName, String trainingName) {
+        trainerService.addTrainer(new TrainerDTO(firstName, lastName, "bio"));
+        cauliflowerService.assignToTraining(new TrainerToTrainingAssigmentDTO(trainingName,
+                firstName, lastName));
+    }
+
+    private void aTraining(String categoryName, String subcategoryName, String trainingName) {
+        cauliflowerService.addCategory(new CategoryDTO(categoryName, "it_descriotion", new ArrayList<>()));
+        cauliflowerService.addSubcategory(new SubcategoryDTO(subcategoryName), categoryName);
+        cauliflowerService.addTraining(new TrainingDTO(trainingName,"Spring_description",
+                new BigDecimal(210),2, new HashSet<>()), subcategoryName);
     }
 }
