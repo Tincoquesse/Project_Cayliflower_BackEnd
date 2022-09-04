@@ -238,7 +238,7 @@ class CauliflowerRestControllerTest {
         // and
         trainerAssingnedToTraining("Wiesiek", "Malina", trainingName);
         OfferPreparationRequestDTO offerPreparationRequestDTO = new OfferPreparationRequestDTO(trainingName,
-                "Java","Wiesiek", "Malina");
+                "Java","Wiesiek", "Malina", "jojo@gmail.com");
         String json = objectMapper.writeValueAsString(offerPreparationRequestDTO);
 
         //when
