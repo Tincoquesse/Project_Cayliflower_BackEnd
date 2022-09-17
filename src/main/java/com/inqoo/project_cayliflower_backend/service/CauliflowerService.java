@@ -4,8 +4,8 @@ import com.inqoo.project_cayliflower_backend.exceptions.*;
 import com.inqoo.project_cayliflower_backend.model.*;
 import com.inqoo.project_cayliflower_backend.repository.CategoryRepo;
 import com.inqoo.project_cayliflower_backend.repository.SubcategoryRepo;
-import com.inqoo.project_cayliflower_backend.repository.TrainerRepo;
 import com.inqoo.project_cayliflower_backend.repository.TrainingRepo;
+import com.inqoo.project_cayliflower_backend.repository.TrainingScheduleRepo;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -25,6 +25,8 @@ public class CauliflowerService {
     private final SubcategoryRepo subcategoryRepo;
     private final CategoryRepo categoryRepo;
     private final TrainerService trainerService;
+    private final TrainingScheduleRepo trainingScheduleRepo;
+
 
     public CauliflowerService(TrainingRepo trainingRepo, SubcategoryRepo subcategoryRepo, CategoryRepo categoryRepo, TrainerService trainerService, TrainingScheduleRepo trainingScheduleRepo) {
         this.trainingRepo = trainingRepo;
@@ -108,11 +110,20 @@ public class CauliflowerService {
         Trainer trainer = trainerService.getTrainerFromRepo(assigmentDTO.getTrainerFirstName(), assigmentDTO.getTrainerLastName())
                 .orElseThrow(TrainerNotExistingException::new);
 
-        if(training.getTrainers().contains(trainer)){
+        if (training.getTrainers().contains(trainer)) {
             throw new NameAlreadyTakenException();
         }
         training.addTrainer(trainer);
         trainingRepo.save(training);
+
+        Set<TrainerScheduleEntry> entrySet = new HashSet<>();
+
+        assigmentDTO.getDates().forEach(date -> entrySet.add(
+                new TrainerScheduleEntry(assigmentDTO.getTrainerFirstName(), assigmentDTO.getTrainerLastName(),
+                        LocalDate.ofInstant(date, ZoneId.systemDefault()))));
+
+        TrainingSchedule trainingSchedule = new TrainingSchedule(assigmentDTO.getTrainingName(), entrySet);
+        trainingScheduleRepo.save(trainingSchedule);
     }
 }
 

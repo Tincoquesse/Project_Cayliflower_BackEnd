@@ -9,9 +9,8 @@ public class TrainingSchedule {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String trainingName;
-    private String trainerFirstName;
-    private String trainerLastName;
-    private Instant date;
+    @OneToMany
+    private Set<TrainerScheduleEntry> trainerScheduleEntries;
 
     public TrainingSchedule(String trainingName, Set<TrainerScheduleEntry> trainerScheduleEntries) {
         this.trainingName = trainingName;
