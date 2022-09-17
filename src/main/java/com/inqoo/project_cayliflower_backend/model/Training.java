@@ -2,7 +2,6 @@ package com.inqoo.project_cayliflower_backend.model;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Set;
 
 
@@ -14,8 +13,6 @@ public class Training {
     private String name;
     private String description;
     private BigDecimal price;
-
-    private LocalDateTime dateTime;
 
     @ManyToMany
     private Set<Trainer> trainers;

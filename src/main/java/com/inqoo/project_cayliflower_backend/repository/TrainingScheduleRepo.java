@@ -10,5 +10,5 @@ import java.util.List;
 public interface TrainingScheduleRepo extends JpaRepository<TrainingSchedule, Long> {
 
     List<TrainingSchedule> findByTrainingName(String trainingName);
-    List<TrainingSchedule> findByTrainerFirstNameAndTrainerLastName(String firstName, String lastName);
+
 }

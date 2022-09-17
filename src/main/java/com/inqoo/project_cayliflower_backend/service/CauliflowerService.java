@@ -9,8 +9,12 @@ import com.inqoo.project_cayliflower_backend.repository.TrainingRepo;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,11 +26,12 @@ public class CauliflowerService {
     private final CategoryRepo categoryRepo;
     private final TrainerService trainerService;
 
-    public CauliflowerService(TrainingRepo trainingRepo, SubcategoryRepo subcategoryRepo, CategoryRepo categoryRepo, TrainerService trainerService) {
+    public CauliflowerService(TrainingRepo trainingRepo, SubcategoryRepo subcategoryRepo, CategoryRepo categoryRepo, TrainerService trainerService, TrainingScheduleRepo trainingScheduleRepo) {
         this.trainingRepo = trainingRepo;
         this.subcategoryRepo = subcategoryRepo;
         this.categoryRepo = categoryRepo;
         this.trainerService = trainerService;
+        this.trainingScheduleRepo = trainingScheduleRepo;
     }
 
     public CategoryDTO addCategory(CategoryDTO categoryDTO) {
@@ -65,7 +70,7 @@ public class CauliflowerService {
         }
         Category category = categoryRepo.findByName(categoryName).orElseThrow();
         ArrayList<SubcategoryDTO> subcategoryDTOs = new ArrayList<>();
-        category.getSubcategories().stream()
+        category.getSubcategories()
                 .forEach(subcategory -> subcategoryDTOs.add(SubcategoryMapper.fromEntity(subcategory)));
         return subcategoryDTOs;
     }
@@ -91,7 +96,7 @@ public class CauliflowerService {
         }
         Subcategory subcategory = subcategoryRepo.findByName(subcategoryName).orElseThrow();
         ArrayList<TrainingDTO> trainingDTOs = new ArrayList<>();
-        subcategory.getTrainings().stream()
+        subcategory.getTrainings()
                 .forEach(training -> trainingDTOs.add(TrainingMapper.fromEntity(training)));
         return trainingDTOs;
     }
@@ -99,11 +104,9 @@ public class CauliflowerService {
 
     public void assignToTraining(TrainerToTrainingAssigmentDTO assigmentDTO) {
         Training training = trainingRepo.findByName(assigmentDTO.getTrainingName())
-                .orElseThrow(() ->
-                        new TrainingNotExistingException());
+                .orElseThrow(TrainingNotExistingException::new);
         Trainer trainer = trainerService.getTrainerFromRepo(assigmentDTO.getTrainerFirstName(), assigmentDTO.getTrainerLastName())
-                .orElseThrow(() ->
-                        new TrainerNotExistingException());
+                .orElseThrow(TrainerNotExistingException::new);
 
         if(training.getTrainers().contains(trainer)){
             throw new NameAlreadyTakenException();

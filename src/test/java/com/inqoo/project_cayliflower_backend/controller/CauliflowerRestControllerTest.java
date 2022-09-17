@@ -144,7 +144,7 @@ class CauliflowerRestControllerTest {
                 new HashSet<>()));
 
         TrainerToTrainingAssigmentDTO trainerToTrainingAssigmentDTO =
-                new TrainerToTrainingAssigmentDTO("testTraining", "Zdzich", "Mnich");
+                new TrainerToTrainingAssigmentDTO("testTraining", "Zdzich", "Mnich", new HashSet<>());
         String json = objectMapper.writeValueAsString(trainerToTrainingAssigmentDTO);
 
         //when
@@ -169,7 +169,7 @@ class CauliflowerRestControllerTest {
         aTraining("TestI");
 
         TrainerToTrainingAssigmentDTO trainerToTrainingAssigmentDTO =
-                new TrainerToTrainingAssigmentDTO("testII", "Mściwój", "Kubek");
+                new TrainerToTrainingAssigmentDTO("testII", "Mściwój", "Kubek", new HashSet<>());
         String json = objectMapper.writeValueAsString(trainerToTrainingAssigmentDTO);
 
         //when
@@ -191,7 +191,7 @@ class CauliflowerRestControllerTest {
         aTraining("TestI");
 
         TrainerToTrainingAssigmentDTO trainerToTrainingAssigmentDTO =
-                new TrainerToTrainingAssigmentDTO("TestI", "Franek", "Janek");
+                new TrainerToTrainingAssigmentDTO("TestI", "Franek", "Janek", new HashSet<>());
         String json = objectMapper.writeValueAsString(trainerToTrainingAssigmentDTO);
 
         //when
@@ -213,7 +213,7 @@ class CauliflowerRestControllerTest {
         aTraining("TestI");
 
         TrainerToTrainingAssigmentDTO trainerToTrainingAssigmentDTO =
-                new TrainerToTrainingAssigmentDTO("TestI", "Zdzich", "Mnich");
+                new TrainerToTrainingAssigmentDTO("TestI", "Zdzich", "Mnich", new HashSet<>());
         String json = objectMapper.writeValueAsString(trainerToTrainingAssigmentDTO);
 
         //when
@@ -254,7 +254,7 @@ class CauliflowerRestControllerTest {
     private void trainerAssingnedToTraining(String firstName, String lastName, String trainingName) {
         trainerService.addTrainer(new TrainerDTO(firstName, lastName, "bio"));
         cauliflowerService.assignToTraining(new TrainerToTrainingAssigmentDTO(trainingName,
-                firstName, lastName));
+                firstName, lastName, new HashSet<>()));
     }
 
     private void aTraining(String categoryName, String subcategoryName, String trainingName) {

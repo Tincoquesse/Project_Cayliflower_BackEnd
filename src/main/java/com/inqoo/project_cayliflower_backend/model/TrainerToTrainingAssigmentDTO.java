@@ -8,10 +8,11 @@ public class TrainerToTrainingAssigmentDTO {
 
     public TrainerToTrainingAssigmentDTO(String trainingName,
                                          String trainerFirstName,
-                                         String trainerLastName) {
+                                         String trainerLastName, Set<Instant> dates) {
         this.trainingName = trainingName;
         this.trainerFirstName = trainerFirstName;
         this.trainerLastName = trainerLastName;
+        this.dates = dates;
     }
 
     public String getTrainingName() {

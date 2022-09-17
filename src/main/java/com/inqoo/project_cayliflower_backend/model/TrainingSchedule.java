@@ -1,10 +1,7 @@
 package com.inqoo.project_cayliflower_backend.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.time.Instant;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class TrainingSchedule {
@@ -16,11 +13,10 @@ public class TrainingSchedule {
     private String trainerLastName;
     private Instant date;
 
-    public TrainingSchedule(String trainingName, String trainerFirstName, String trainerLastName, Instant date) {
+    public TrainingSchedule(String trainingName, Set<TrainerScheduleEntry> trainerScheduleEntries) {
         this.trainingName = trainingName;
-        this.trainerFirstName = trainerFirstName;
-        this.trainerLastName = trainerLastName;
-        this.date = date;
+
+        this.trainerScheduleEntries = trainerScheduleEntries;
     }
 
     public TrainingSchedule() {
@@ -30,15 +26,7 @@ public class TrainingSchedule {
         return trainingName;
     }
 
-    public String getTrainerFirstName() {
-        return trainerFirstName;
-    }
-
-    public String getTrainerLastName() {
-        return trainerLastName;
-    }
-
-    public Instant getDate() {
-        return date;
+    public Set<TrainerScheduleEntry> getTrainerScheduleEntries() {
+        return trainerScheduleEntries;
     }
 }

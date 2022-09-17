@@ -23,7 +23,4 @@ public class TrainingScheduleService {
         return trainingScheduleRepo.findByTrainingName(trainingName);
     }
 
-    public List<TrainingSchedule> getTrainingScheduleByTrainer(String firstName, String lastName) {
-        return trainingScheduleRepo.findByTrainerFirstNameAndTrainerLastName(firstName, lastName);
-    }
 }
