@@ -1,10 +1,12 @@
 package com.inqoo.project_cayliflower_backend.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.inqoo.project_cayliflower_backend.model.*;
 import com.inqoo.project_cayliflower_backend.repository.CategoryRepo;
 import com.inqoo.project_cayliflower_backend.repository.TrainerRepo;
 import com.inqoo.project_cayliflower_backend.repository.TrainingRepo;
+import com.inqoo.project_cayliflower_backend.repository.TrainingScheduleRepo;
 import com.inqoo.project_cayliflower_backend.service.CauliflowerService;
 import com.inqoo.project_cayliflower_backend.service.TrainerService;
 import org.junit.jupiter.api.Test;
@@ -17,6 +19,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -46,6 +49,9 @@ class CauliflowerRestControllerTest {
 
     @Autowired
     private TrainerService trainerService;
+
+    @Autowired
+    private TrainingScheduleRepo trainingScheduleRepo;
 
     private void aTrainer(String firstName, String lastName) {
         trainerRepo.save(new Trainer(firstName, lastName, "Bio", new HashSet<>()));
@@ -249,6 +255,32 @@ class CauliflowerRestControllerTest {
 
         //then
         assertThat(status).isEqualTo(200);
+    }
+
+
+    @Test
+    public void shouldCheckTrainerDayAssigment() throws Exception {
+        //GIVEN
+        aTrainer("Zdzich","Mnich");
+        aTraining("IT", "Java", "Spring");
+
+        Set<Instant> dates = new HashSet<>();
+        dates.add(Instant.parse("2023-02-03T10:30:00.00Z"));
+        dates.add(Instant.parse("2023-02-10T10:30:00.00Z"));
+
+        TrainerToTrainingAssigmentDTO trainerToTrainingAssigmentDTO =
+                new TrainerToTrainingAssigmentDTO("Spring", "Zdzich", "Mnich", dates);
+        String json = objectMapper.writeValueAsString(trainerToTrainingAssigmentDTO);
+
+        //WHEN
+        MvcResult mvcResult = this.mockMvc.perform(post("/api/assigment")
+                        .contentType(APPLICATION_JSON).content(json))
+                .andReturn();
+        int status = mvcResult.getResponse().getStatus();
+
+        //THEN
+        assertThat(status).isEqualTo(200);
+
     }
 
     private void trainerAssingnedToTraining(String firstName, String lastName, String trainingName) {

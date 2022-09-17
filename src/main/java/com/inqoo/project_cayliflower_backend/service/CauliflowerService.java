@@ -2,10 +2,7 @@ package com.inqoo.project_cayliflower_backend.service;
 
 import com.inqoo.project_cayliflower_backend.exceptions.*;
 import com.inqoo.project_cayliflower_backend.model.*;
-import com.inqoo.project_cayliflower_backend.repository.CategoryRepo;
-import com.inqoo.project_cayliflower_backend.repository.SubcategoryRepo;
-import com.inqoo.project_cayliflower_backend.repository.TrainingRepo;
-import com.inqoo.project_cayliflower_backend.repository.TrainingScheduleRepo;
+import com.inqoo.project_cayliflower_backend.repository.*;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -72,7 +69,7 @@ public class CauliflowerService {
         }
         Category category = categoryRepo.findByName(categoryName).orElseThrow();
         ArrayList<SubcategoryDTO> subcategoryDTOs = new ArrayList<>();
-        category.getSubcategories()
+        category.getSubcategories().stream()
                 .forEach(subcategory -> subcategoryDTOs.add(SubcategoryMapper.fromEntity(subcategory)));
         return subcategoryDTOs;
     }
@@ -98,7 +95,7 @@ public class CauliflowerService {
         }
         Subcategory subcategory = subcategoryRepo.findByName(subcategoryName).orElseThrow();
         ArrayList<TrainingDTO> trainingDTOs = new ArrayList<>();
-        subcategory.getTrainings()
+        subcategory.getTrainings().stream()
                 .forEach(training -> trainingDTOs.add(TrainingMapper.fromEntity(training)));
         return trainingDTOs;
     }
@@ -106,16 +103,17 @@ public class CauliflowerService {
 
     public void assignToTraining(TrainerToTrainingAssigmentDTO assigmentDTO) {
         Training training = trainingRepo.findByName(assigmentDTO.getTrainingName())
-                .orElseThrow(TrainingNotExistingException::new);
+                .orElseThrow(() ->
+                        new TrainingNotExistingException());
         Trainer trainer = trainerService.getTrainerFromRepo(assigmentDTO.getTrainerFirstName(), assigmentDTO.getTrainerLastName())
-                .orElseThrow(TrainerNotExistingException::new);
-
+                .orElseThrow(() ->
+                        new TrainerNotExistingException());
+        System.out.println("dupa");
         if (training.getTrainers().contains(trainer)) {
             throw new NameAlreadyTakenException();
         }
         training.addTrainer(trainer);
         trainingRepo.save(training);
-
         Set<TrainerScheduleEntry> entrySet = new HashSet<>();
 
         assigmentDTO.getDates().forEach(date -> entrySet.add(
