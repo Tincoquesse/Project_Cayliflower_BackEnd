@@ -54,10 +54,11 @@ class CauliflowerServiceTest {
                 "Spring", "Jan", "Dzban", dates);
         //when
         cauliflowerService.assignToTraining(trainerToTrainingAssigmentDTO);
+
         var anything = trainingScheduleRepo.findByTrainingName("Spring").stream()
                 .map(TrainingSchedule::getTrainerScheduleEntries)
-                .filter(t -> {t.stream()
-                        .map(TrainerScheduleEntry::getDate).equals(LocalDate.of(2023, 02,03))})
+                .filter(t -> t.stream()
+                        .map(TrainerScheduleEntry::getDate).equals(LocalDate.of(2023, 2,3)))
                 .collect(Collectors.toList());
 
         //then

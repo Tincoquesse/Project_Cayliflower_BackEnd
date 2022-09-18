@@ -24,13 +24,16 @@ public class CauliflowerService {
     private final TrainerService trainerService;
     private final TrainingScheduleRepo trainingScheduleRepo;
 
+    private final TrainingScheduleEntryRepo entryRepo;
 
-    public CauliflowerService(TrainingRepo trainingRepo, SubcategoryRepo subcategoryRepo, CategoryRepo categoryRepo, TrainerService trainerService, TrainingScheduleRepo trainingScheduleRepo) {
+
+    public CauliflowerService(TrainingRepo trainingRepo, SubcategoryRepo subcategoryRepo, CategoryRepo categoryRepo, TrainerService trainerService, TrainingScheduleRepo trainingScheduleRepo, TrainingScheduleEntryRepo entryRepo) {
         this.trainingRepo = trainingRepo;
         this.subcategoryRepo = subcategoryRepo;
         this.categoryRepo = categoryRepo;
         this.trainerService = trainerService;
         this.trainingScheduleRepo = trainingScheduleRepo;
+        this.entryRepo = entryRepo;
     }
 
     public CategoryDTO addCategory(CategoryDTO categoryDTO) {
@@ -108,7 +111,6 @@ public class CauliflowerService {
         Trainer trainer = trainerService.getTrainerFromRepo(assigmentDTO.getTrainerFirstName(), assigmentDTO.getTrainerLastName())
                 .orElseThrow(() ->
                         new TrainerNotExistingException());
-        System.out.println("dupa");
         if (training.getTrainers().contains(trainer)) {
             throw new NameAlreadyTakenException();
         }
@@ -117,8 +119,8 @@ public class CauliflowerService {
         Set<TrainerScheduleEntry> entrySet = new HashSet<>();
 
         assigmentDTO.getDates().forEach(date -> entrySet.add(
-                new TrainerScheduleEntry(assigmentDTO.getTrainerFirstName(), assigmentDTO.getTrainerLastName(),
-                        LocalDate.ofInstant(date, ZoneId.systemDefault()))));
+                entryRepo.save(new TrainerScheduleEntry(assigmentDTO.getTrainerFirstName(), assigmentDTO.getTrainerLastName(),
+                        LocalDate.ofInstant(date, ZoneId.systemDefault())))));
 
         TrainingSchedule trainingSchedule = new TrainingSchedule(assigmentDTO.getTrainingName(), entrySet);
         trainingScheduleRepo.save(trainingSchedule);
