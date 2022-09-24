@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-public class OfferController {
+class OfferController {
     private final OfferService offerService;
 
     public OfferController(OfferService offerService) {
         this.offerService = offerService;
     }
 
-    @PostMapping("/offerPreparationRequest")
+    @PostMapping("/offer")
     public ResponseEntity<String> saveOffer(@RequestBody OfferPreparationRequestDTO offerPreparationRequestDTO){
         offerService.processOffer(offerPreparationRequestDTO);
         return ResponseEntity.ok().body("Offer send");

@@ -2,12 +2,13 @@ package com.inqoo.project_cayliflower_backend.service;
 
 import com.inqoo.project_cayliflower_backend.exceptions.*;
 import com.inqoo.project_cayliflower_backend.model.*;
-import com.inqoo.project_cayliflower_backend.repository.*;
+import com.inqoo.project_cayliflower_backend.repository.CategoryRepo;
+import com.inqoo.project_cayliflower_backend.repository.SubcategoryRepo;
+import com.inqoo.project_cayliflower_backend.repository.TrainingRepo;
+import com.inqoo.project_cayliflower_backend.repository.TrainingScheduleRepo;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -24,16 +25,12 @@ public class CauliflowerService {
     private final TrainerService trainerService;
     private final TrainingScheduleRepo trainingScheduleRepo;
 
-    private final TrainingScheduleEntryRepo entryRepo;
-
-
-    public CauliflowerService(TrainingRepo trainingRepo, SubcategoryRepo subcategoryRepo, CategoryRepo categoryRepo, TrainerService trainerService, TrainingScheduleRepo trainingScheduleRepo, TrainingScheduleEntryRepo entryRepo) {
+    public CauliflowerService(TrainingRepo trainingRepo, SubcategoryRepo subcategoryRepo, CategoryRepo categoryRepo, TrainerService trainerService, TrainingScheduleRepo trainingScheduleRepo) {
         this.trainingRepo = trainingRepo;
         this.subcategoryRepo = subcategoryRepo;
         this.categoryRepo = categoryRepo;
         this.trainerService = trainerService;
         this.trainingScheduleRepo = trainingScheduleRepo;
-        this.entryRepo = entryRepo;
     }
 
     public CategoryDTO addCategory(CategoryDTO categoryDTO) {
@@ -61,7 +58,7 @@ public class CauliflowerService {
             throw new NameAlreadyTakenException();
         }
         Subcategory save = subcategoryRepo.save(SubcategoryMapper.fromDTO(subcategoryDTO));
-        category.addSubcategory(save); //getSubcategories().add(save);
+        category.addSubcategory(save);
         categoryRepo.save(category);
         return SubcategoryMapper.fromEntity(save);
     }
@@ -119,11 +116,10 @@ public class CauliflowerService {
         Set<TrainerScheduleEntry> entrySet = new HashSet<>();
 
         assigmentDTO.getDates().forEach(date -> entrySet.add(
-                entryRepo.save(new TrainerScheduleEntry(assigmentDTO.getTrainerFirstName(), assigmentDTO.getTrainerLastName(),
-                        LocalDate.ofInstant(date, ZoneId.systemDefault())))));
+                new TrainerScheduleEntry(assigmentDTO.getTrainerFirstName(), assigmentDTO.getTrainerLastName(),
+                        date)));
 
         TrainingSchedule trainingSchedule = new TrainingSchedule(assigmentDTO.getTrainingName(), entrySet);
         trainingScheduleRepo.save(trainingSchedule);
     }
 }
-

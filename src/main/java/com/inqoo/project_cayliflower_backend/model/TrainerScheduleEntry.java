@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.Instant;
 import java.time.LocalDate;
 
 @Entity
@@ -15,12 +16,12 @@ public class TrainerScheduleEntry {
 
     private String firstName;
     private String lastName;
-    private LocalDate date;
+    private Instant startDate;
 
-    public TrainerScheduleEntry(String firstName, String lastName, LocalDate date) {
+    public TrainerScheduleEntry(String firstName, String lastName, Instant date) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.date = date;
+        this.startDate = date;
     }
 
     public TrainerScheduleEntry() {
@@ -30,23 +31,12 @@ public class TrainerScheduleEntry {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public Instant getStartDate() {
+        return startDate;
     }
 
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
 }
