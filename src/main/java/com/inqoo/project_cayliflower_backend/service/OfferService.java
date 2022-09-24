@@ -4,8 +4,6 @@ import com.inqoo.project_cayliflower_backend.model.OfferPreparationRequestDTO;
 import com.inqoo.project_cayliflower_backend.repository.TrainingRepo;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-
 @Service
 public class OfferService {
 

@@ -235,26 +235,6 @@ class CauliflowerRestControllerTest {
                         .content(json))
                 .andReturn();
     }
-//    @Test
-//    public void shouldPrepareOffer() throws Exception {
-//        //given
-//        String trainingName = "Spring";
-//        aTraining("IT", "Java", trainingName);
-//        // and
-//        trainerAssingnedToTraining("Wiesiek", "Malina", trainingName);
-//        OfferPreparationRequestDTO offerPreparationRequestDTO = new OfferPreparationRequestDTO(trainingName,
-//                "Java","Wiesiek", "Malina", trainings, "jojo@gmail.com");
-//        String json = objectMapper.writeValueAsString(offerPreparationRequestDTO);
-//
-//        //when
-//        MvcResult mvcResult = mockMvc.perform(post("/api/offerPreparationRequest")
-//                .contentType(APPLICATION_JSON).content(json)).andReturn();
-//        String contentAsString = mvcResult.getResponse().getContentAsString();
-//        int status = mvcResult.getResponse().getStatus();
-//
-//        //then
-//        assertThat(status).isEqualTo(200);
-//    }
 
 
     @Test

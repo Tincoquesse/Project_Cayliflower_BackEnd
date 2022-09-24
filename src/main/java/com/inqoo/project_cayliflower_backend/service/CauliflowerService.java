@@ -126,4 +126,3 @@ public class CauliflowerService {
         trainingScheduleRepo.save(trainingSchedule);
     }
 }
-
