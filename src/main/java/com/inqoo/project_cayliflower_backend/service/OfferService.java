@@ -2,12 +2,11 @@ package com.inqoo.project_cayliflower_backend.service;
 
 import com.inqoo.project_cayliflower_backend.model.OfferPreparationRequestDTO;
 import com.inqoo.project_cayliflower_backend.repository.TrainingRepo;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
 
@@ -15,37 +14,34 @@ import java.io.UnsupportedEncodingException;
 @Transactional
 public class OfferService {
 
-    private final JavaMailSender javaMailSender;
+    private final MailSender javaMailSender;
 
     private final TrainingRepo trainingRepo;
 
-    public OfferService(JavaMailSender javaMailSender, TrainingRepo trainingRepo) {
+    public OfferService(MailSender javaMailSender, TrainingRepo trainingRepo) {
         this.javaMailSender = javaMailSender;
         this.trainingRepo = trainingRepo;
     }
 
     public void processOffer(OfferPreparationRequestDTO requestDTO) throws MessagingException, UnsupportedEncodingException {
-        sendVerificationEmail(requestDTO);
+        sendEmail(requestDTO);
 
     }
-    public void sendVerificationEmail(OfferPreparationRequestDTO requestDTO)
-            throws MessagingException, UnsupportedEncodingException {
+    public void sendEmail(OfferPreparationRequestDTO requestDTO) {
         String toAddress = requestDTO.getEmail();
         String fromAddress = "kursy.kalafior@gmail.com";
-        String senderName = "Kalafiory";
         String subject = "Oferta Szkoleń";
-        String content = "Dear Customer,<br>"
-                + "test<br>"
-                + "Thank you,<br>"
-                + "kalafiory.pl.";
 
-        MimeMessage message = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message);
+        String content = "Dear Customer,\n"
+                + "Thank you for Your order!\n"
+                + "Kursy kalafior";
 
-        helper.setFrom(fromAddress, senderName);
-        helper.setTo(toAddress);
-        helper.setSubject(subject);
-        helper.setText(content, true);
+        SimpleMailMessage message  = new SimpleMailMessage();
+        message.setTo(toAddress);
+        message.setFrom(fromAddress);
+        message.setSubject(subject);
+        message.setText(content);
+
         javaMailSender.send(message);
 
     }

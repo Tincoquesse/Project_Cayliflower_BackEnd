@@ -18,6 +18,7 @@ dependencies {
     runtimeOnly 'com.h2database:h2'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.boot:spring-boot-starter-mail:2.7.3'
+    testImplementation 'com.icegreen:greenmail-spring:1.6.9'
 }
 
 tasks.named('test') {

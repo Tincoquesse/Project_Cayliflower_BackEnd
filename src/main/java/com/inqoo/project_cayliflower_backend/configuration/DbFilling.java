@@ -41,10 +41,12 @@ public class DbFilling {
         controller.addCategory(new CategoryDTO("Sprzedaż", "Sales Category", Collections.emptyList()));
         controller.addCategory(new CategoryDTO("Marketing", "Marketing Category", Collections.emptyList()));
         controller.addCategory(new CategoryDTO("Inne", "Other Category", Collections.emptyList()));
+
         controller.addSubcategory(new SubcategoryDTO("Java"),"IT");
         controller.addSubcategory(new SubcategoryDTO("C#"),"IT");
         controller.addSubcategory(new SubcategoryDTO("JS"),"IT");
         controller.addSubcategory(new SubcategoryDTO("DevOps"),"IT");
+
         controller.addTraining(new TrainingDTO("Java Podstawy","Kurs skierowany do osób, " +
                 "chcących rozpocząć swoją przygodę z branżą IT, nie wymaga wcześniejszego " +
                 "doświadczenia w programowaniu",
@@ -55,8 +57,6 @@ public class DbFilling {
                 new BigDecimal(100),10,new HashSet<>(),new HashSet<>()),"Java");
         controller.addTraining(new TrainingDTO("Hibernate","Test",
                 new BigDecimal(100),10,new HashSet<>(),new HashSet<>()),"Java");
-
-
 
     }
 

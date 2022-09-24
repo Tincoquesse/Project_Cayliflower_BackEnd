@@ -3,9 +3,8 @@ package com.inqoo.project_cayliflower_backend.model;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.stereotype.Component;
 
-@Component
+
 public class MailSenderForTests implements MailSender {
 
     @Override
