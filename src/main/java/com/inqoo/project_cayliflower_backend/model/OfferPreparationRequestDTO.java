@@ -1,18 +1,14 @@
 package com.inqoo.project_cayliflower_backend.model;
 
+import java.util.Set;
+
 public class OfferPreparationRequestDTO {
 
-    private final String trainingName;
-    private final String subcategoryName;
-    private final String trainerFirstName;
-    private final String trainerLastName;
+    private Set<Training> trainings;
     private final String email;
 
-    public OfferPreparationRequestDTO(String trainingName, String subcategoryName, String trainerFirstName, String trainerLastName, String email) {
-        this.trainingName = trainingName;
-        this.subcategoryName = subcategoryName;
-        this.trainerFirstName = trainerFirstName;
-        this.trainerLastName = trainerLastName;
+    public OfferPreparationRequestDTO( Set<Training> trainings, String email) {
+        this.trainings = trainings;
         this.email = email;
     }
 
@@ -20,19 +16,7 @@ public class OfferPreparationRequestDTO {
         return email;
     }
 
-    public String getTrainingName() {
-        return trainingName;
-    }
-
-    public String getSubcategoryName() {
-        return subcategoryName;
-    }
-
-    public String getTrainerFirstName() {
-        return trainerFirstName;
-    }
-
-    public String getTrainerLastName() {
-        return trainerLastName;
+    public Set<Training> getTrainings() {
+        return trainings;
     }
 }

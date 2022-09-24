@@ -15,7 +15,7 @@ public class OfferController {
         this.offerService = offerService;
     }
 
-    @PostMapping("/offerPreparationRequest")
+    @PostMapping("/offer")
     public ResponseEntity<String> saveOffer(@RequestBody OfferPreparationRequestDTO offerPreparationRequestDTO){
         offerService.processOffer(offerPreparationRequestDTO);
         return ResponseEntity.ok().body("Offer send");
