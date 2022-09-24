@@ -9,7 +9,7 @@ public class TrainingSchedule {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String trainingName;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<TrainerScheduleEntry> trainerScheduleEntries;
 
     public TrainingSchedule(String trainingName, Set<TrainerScheduleEntry> trainerScheduleEntries) {

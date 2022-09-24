@@ -4,7 +4,7 @@ import java.util.Set;
 
 public class OfferPreparationRequestDTO {
 
-    private Set<Training> trainings;
+    private final Set<Training> trainings;
     private final String email;
 
     public OfferPreparationRequestDTO( Set<Training> trainings, String email) {
