@@ -5,6 +5,9 @@ import com.inqoo.project_cayliflower_backend.service.OfferService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
+
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -16,7 +19,7 @@ class OfferController {
     }
 
     @PostMapping("/offer")
-    public ResponseEntity<String> saveOffer(@RequestBody OfferPreparationRequestDTO offerPreparationRequestDTO){
+    public ResponseEntity<String> saveOffer(@RequestBody OfferPreparationRequestDTO offerPreparationRequestDTO) throws MessagingException, UnsupportedEncodingException {
         offerService.processOffer(offerPreparationRequestDTO);
         return ResponseEntity.ok().body("Offer send");
     }
