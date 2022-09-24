@@ -9,14 +9,16 @@ public class TrainingDTO {
     private final BigDecimal price;
     private final int duration;
     private final Set<Trainer> trainers;
+    private final Set<TrainingScheduleDTO> scheduleDTOSet;
 
 
-    public TrainingDTO(String name, String description, BigDecimal price, int duration, Set<Trainer> trainers) {
+    public TrainingDTO(String name, String description, BigDecimal price, int duration, Set<Trainer> trainers, Set<TrainingScheduleDTO> scheduleDTOSet) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.duration = duration;
         this.trainers = trainers;
+        this.scheduleDTOSet = scheduleDTOSet;
     }
 
     public String getName() {

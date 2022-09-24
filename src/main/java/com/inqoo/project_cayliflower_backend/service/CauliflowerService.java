@@ -4,27 +4,33 @@ import com.inqoo.project_cayliflower_backend.exceptions.*;
 import com.inqoo.project_cayliflower_backend.model.*;
 import com.inqoo.project_cayliflower_backend.repository.CategoryRepo;
 import com.inqoo.project_cayliflower_backend.repository.SubcategoryRepo;
-import com.inqoo.project_cayliflower_backend.repository.TrainerRepo;
 import com.inqoo.project_cayliflower_backend.repository.TrainingRepo;
+import com.inqoo.project_cayliflower_backend.repository.TrainingScheduleRepo;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class CauliflowerService {
 
     private final TrainingRepo trainingRepo;
     private final SubcategoryRepo subcategoryRepo;
     private final CategoryRepo categoryRepo;
     private final TrainerService trainerService;
+    private final TrainingScheduleRepo trainingScheduleRepo;
 
-    public CauliflowerService(TrainingRepo trainingRepo, SubcategoryRepo subcategoryRepo, CategoryRepo categoryRepo, TrainerService trainerService) {
+    public CauliflowerService(TrainingRepo trainingRepo, SubcategoryRepo subcategoryRepo, CategoryRepo categoryRepo, TrainerService trainerService, TrainingScheduleRepo trainingScheduleRepo) {
         this.trainingRepo = trainingRepo;
         this.subcategoryRepo = subcategoryRepo;
         this.categoryRepo = categoryRepo;
         this.trainerService = trainerService;
+        this.trainingScheduleRepo = trainingScheduleRepo;
     }
 
     public CategoryDTO addCategory(CategoryDTO categoryDTO) {
@@ -52,7 +58,7 @@ public class CauliflowerService {
             throw new NameAlreadyTakenException();
         }
         Subcategory save = subcategoryRepo.save(SubcategoryMapper.fromDTO(subcategoryDTO));
-        category.getSubcategories().add(save);
+        category.addSubcategory(save);
         categoryRepo.save(category);
         return SubcategoryMapper.fromEntity(save);
     }
@@ -78,7 +84,7 @@ public class CauliflowerService {
             throw new NameAlreadyTakenException();
         }
         Training save = trainingRepo.save(TrainingMapper.fromDTO(trainingDTO));
-        subcategory.getTrainings().add(save);
+        subcategory.addTraining(save);
         subcategoryRepo.save(subcategory);
         return TrainingMapper.fromEntity(save);
     }
@@ -102,12 +108,18 @@ public class CauliflowerService {
         Trainer trainer = trainerService.getTrainerFromRepo(assigmentDTO.getTrainerFirstName(), assigmentDTO.getTrainerLastName())
                 .orElseThrow(() ->
                         new TrainerNotExistingException());
-
-        if(training.getTrainers().contains(trainer)){
+        if (training.getTrainers().contains(trainer)) {
             throw new NameAlreadyTakenException();
         }
         training.addTrainer(trainer);
         trainingRepo.save(training);
+        Set<TrainerScheduleEntry> entrySet = new HashSet<>();
+
+        assigmentDTO.getDates().forEach(date -> entrySet.add(
+                new TrainerScheduleEntry(assigmentDTO.getTrainerFirstName(), assigmentDTO.getTrainerLastName(),
+                        date)));
+
+        TrainingSchedule trainingSchedule = new TrainingSchedule(assigmentDTO.getTrainingName(), entrySet);
+        trainingScheduleRepo.save(trainingSchedule);
     }
 }
-

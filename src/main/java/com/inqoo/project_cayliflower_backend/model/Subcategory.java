@@ -26,16 +26,8 @@ public class Subcategory {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public List<Training> getTrainings() {
         return trainings;
-    }
-
-    public void setTrainings(List<Training> trainings) {
-        this.trainings = trainings;
     }
 
     public String getName() {
@@ -44,5 +36,9 @@ public class Subcategory {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void addTraining(Training newTraining) {
+        trainings.add(newTraining);
     }
 }
