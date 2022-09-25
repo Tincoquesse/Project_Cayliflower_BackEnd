@@ -40,25 +40,33 @@ public class DbFilling {
         controller.addCategory(new CategoryDTO("Inne", "Other Category", Collections.emptyList()));
 
         controller.addSubcategory(new SubcategoryDTO("Java"),"IT");
-        controller.addSubcategory(new SubcategoryDTO("cSharp"),"IT");
+        controller.addSubcategory(new SubcategoryDTO("C Sharp"),"IT");
         controller.addSubcategory(new SubcategoryDTO("JS"),"IT");
         controller.addSubcategory(new SubcategoryDTO("DevOps"),"IT");
 
         controller.addTraining(new TrainingDTO("Java Podstawy","Kurs skierowany do osób, " +
                 "chcących rozpocząć swoją przygodę z branżą IT, nie wymaga wcześniejszego " +
                 "doświadczenia w programowaniu",
-                new BigDecimal(100),10,new HashSet<>(),new HashSet<>()),"Java");
-        controller.addTraining(new TrainingDTO("Java Zaawansowana","Szkolenie dla osób które posiadają doświadczenie w branży IT ",
-                new BigDecimal(100),10,new HashSet<>(),new HashSet<>()),"Java");
-        controller.addTraining(new TrainingDTO("Spring","Test",
-                new BigDecimal(100),10,new HashSet<>(),new HashSet<>()),"Java");
-        controller.addTraining(new TrainingDTO("Hibernate","Test",
-                new BigDecimal(100),10,new HashSet<>(),new HashSet<>()),"Java");
+                new BigDecimal(3000),20,new HashSet<>(),new HashSet<>()),"Java");
+        controller.addTraining(new TrainingDTO("Java Zaawansowana","Szkolenie dla osób które posiadają doświadczenie w branży IT, " +
+                "chcących zgłębiać tajniki języka Java ",
+                new BigDecimal(3000),25,new HashSet<>(),new HashSet<>()),"Java");
+        controller.addTraining(new TrainingDTO("Spring","Spring to najpopularniejszy framework dla Java, dlatego jego znajomość jest " +
+                "praktycznie niezbędna, jeśli myślisz o karierze Java Developera.",
+                new BigDecimal(2500),15,new HashSet<>(),new HashSet<>()),"Java");
+        controller.addTraining(new TrainingDTO("Hibernate","Hibernate framework stanowiący jedną z najpopularniejszych implementacji Java Persistence API (JPA)." +
+                "Odpowiada za wygodna komunikację aplikacji z bazą danych.",
+                new BigDecimal(2500),15,new HashSet<>(),new HashSet<>()),"Java");
 
         controller.addTrainer(new TrainerDTO("Paweł", "Gajec", "Lubię placki"));
         controller.addTrainer(new TrainerDTO("Kamil", "Kotlarz", "Lubię placki"));
+        controller.addTrainer(new TrainerDTO("Piotr", "Laskowski", "Nie lubię placków"));
 
+        controller.assignTrainerToTraining(new TrainerToTrainingAssigmentDTO("Java Podstawy", "Paweł", "Gajec", new HashSet<>()));
         controller.assignTrainerToTraining(new TrainerToTrainingAssigmentDTO("Java Zaawansowana", "Paweł", "Gajec", new HashSet<>()));
         controller.assignTrainerToTraining(new TrainerToTrainingAssigmentDTO("Java Zaawansowana", "Kamil", "Kotlarz", new HashSet<>()));
+        controller.assignTrainerToTraining(new TrainerToTrainingAssigmentDTO("Hibernate", "Kamil", "Kotlarz", new HashSet<>()));
+        controller.assignTrainerToTraining(new TrainerToTrainingAssigmentDTO("Hibernate", "Piotr", "Laskowski", new HashSet<>()));
+        controller.assignTrainerToTraining(new TrainerToTrainingAssigmentDTO("Spring", "Piotr", "Laskowski", new HashSet<>()));
     }
 }
