@@ -58,6 +58,8 @@ public class DbFilling {
         controller.addTraining(new TrainingDTO("Hibernate","Test",
                 new BigDecimal(100),10,new HashSet<>(),new HashSet<>()),"Java");
 
+        offerService.processOffer(new OfferPreparationRequestDTO(new HashSet<>(), "kamil.sound@gmail.com"));
+
     }
 
 

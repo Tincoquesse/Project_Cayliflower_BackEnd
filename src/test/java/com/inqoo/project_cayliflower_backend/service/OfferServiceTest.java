@@ -23,8 +23,8 @@ public class OfferServiceTest {
     @Rule
     public GreenMailRule server = new GreenMailRule(new ServerSetup(25, "localhost", "smtp"));
 
-    @Autowired
-    MailSenderForTests mailSenderForTests;
+
+    MailSenderForTests mailSenderForTests = new MailSenderForTests();
 
     @Test
     public void shouldSendEmail() throws Exception {
