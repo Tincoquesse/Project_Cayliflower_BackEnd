@@ -1,6 +1,7 @@
 package com.inqoo.project_cayliflower_backend.service;
 
 import com.inqoo.project_cayliflower_backend.model.OfferPreparationRequestDTO;
+import com.inqoo.project_cayliflower_backend.model.Training;
 import com.inqoo.project_cayliflower_backend.repository.TrainingRepo;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -9,6 +10,9 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -32,11 +36,19 @@ public class OfferService {
         String fromAddress = "kursy.kalafior@gmail.com";
         String subject = "Oferta Szkoleń";
 
+        String trainingsText = "";
+        for (Training training: requestDTO.getTrainings()){
+            trainingsText += training.toString() + "\n";
+        }
 
-
-        String content = "Dear Customer,\n"
-                + "Thank you for Your order!\n"
+        String content = "Drogi Kliencie,\n"
+                + "Dziękujemy za Twoje zamówienie!\n"
+                + "Zamówiłeś następujące kursy: \n"
+                + trainingsText+ "\n"
+                + "Pozdrawiamy \n"
                 + "Kursy kalafior";
+
+        System.out.println(content);
 
         SimpleMailMessage message  = new SimpleMailMessage();
         message.setTo(toAddress);
@@ -46,5 +58,12 @@ public class OfferService {
 
         javaMailSender.send(message);
 
+    }
+
+    public static void main(String[] args) {
+        OfferService offerService = new OfferService(null, null);
+        Set<Training> trainings = new HashSet<>();
+        trainings.add(new Training("name", "test", BigDecimal.ONE, 23, new HashSet<>()));
+        offerService.sendEmail(new OfferPreparationRequestDTO(trainings, "kkkkm"));
     }
 }

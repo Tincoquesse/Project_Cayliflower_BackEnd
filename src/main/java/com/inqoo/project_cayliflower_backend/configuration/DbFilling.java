@@ -2,10 +2,7 @@ package com.inqoo.project_cayliflower_backend.configuration;
 
 
 import com.inqoo.project_cayliflower_backend.controller.CauliflowerRestController;
-import com.inqoo.project_cayliflower_backend.model.CategoryDTO;
-import com.inqoo.project_cayliflower_backend.model.OfferPreparationRequestDTO;
-import com.inqoo.project_cayliflower_backend.model.SubcategoryDTO;
-import com.inqoo.project_cayliflower_backend.model.TrainingDTO;
+import com.inqoo.project_cayliflower_backend.model.*;
 import com.inqoo.project_cayliflower_backend.service.OfferService;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Bean;
@@ -43,7 +40,7 @@ public class DbFilling {
         controller.addCategory(new CategoryDTO("Inne", "Other Category", Collections.emptyList()));
 
         controller.addSubcategory(new SubcategoryDTO("Java"),"IT");
-        controller.addSubcategory(new SubcategoryDTO("C#"),"IT");
+        controller.addSubcategory(new SubcategoryDTO("cSharp"),"IT");
         controller.addSubcategory(new SubcategoryDTO("JS"),"IT");
         controller.addSubcategory(new SubcategoryDTO("DevOps"),"IT");
 
@@ -58,9 +55,10 @@ public class DbFilling {
         controller.addTraining(new TrainingDTO("Hibernate","Test",
                 new BigDecimal(100),10,new HashSet<>(),new HashSet<>()),"Java");
 
-        offerService.processOffer(new OfferPreparationRequestDTO(new HashSet<>(), "kamil.sound@gmail.com"));
+        controller.addTrainer(new TrainerDTO("Paweł", "Gajec", "Lubię placki"));
+        controller.addTrainer(new TrainerDTO("Kamil", "Kotlarz", "Lubię placki"));
 
+        controller.assignTrainerToTraining(new TrainerToTrainingAssigmentDTO("Java Zaawansowana", "Paweł", "Gajec", new HashSet<>()));
+        controller.assignTrainerToTraining(new TrainerToTrainingAssigmentDTO("Java Zaawansowana", "Kamil", "Kotlarz", new HashSet<>()));
     }
-
-
 }

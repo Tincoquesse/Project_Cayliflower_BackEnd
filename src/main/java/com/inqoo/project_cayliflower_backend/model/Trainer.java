@@ -62,6 +62,15 @@ public class Trainer {
     public Long getId() {
         return id;
     }
+
+    @Override
+    public String toString() {
+        return
+                firstName + ", " +
+                lastName + ", \n" +
+                "bio: " + bio + ". "
+                ;
+    }
 }
 
 

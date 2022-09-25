@@ -80,12 +80,18 @@ public class Training {
 
     @Override
     public String toString() {
-        return "Training{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", price=" + price +
-                ", trainers=" + trainers +
-                ", duration=" + duration +
-                '}';
+
+        String trainersText = "";
+        for (Trainer trainer: trainers){
+            trainersText += trainer.toString() + "\n\n";
+        }
+
+        return "Kurs: \n" +
+                "nazwa: " + name + "\n" +
+                "opis: " + description + "\n" +
+                "cena: " + price + " PLN \n" +
+                "prowadzący: \n" + trainersText +
+                "czas trwania: " + duration + " dni\n"
+                ;
     }
 }

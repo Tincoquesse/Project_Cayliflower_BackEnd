@@ -19,9 +19,9 @@ class OfferController {
     }
 
     @PostMapping("/offer")
-    public ResponseEntity<String> saveOffer(@RequestBody OfferPreparationRequestDTO offerPreparationRequestDTO) throws MessagingException, UnsupportedEncodingException {
+    public ResponseEntity<Void> saveOffer(@RequestBody OfferPreparationRequestDTO offerPreparationRequestDTO) throws MessagingException, UnsupportedEncodingException {
         offerService.processOffer(offerPreparationRequestDTO);
-        return ResponseEntity.ok().body("Offer send");
+        return ResponseEntity.ok().build();
     }
 
 }
