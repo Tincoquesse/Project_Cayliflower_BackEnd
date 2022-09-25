@@ -83,7 +83,7 @@ public class Training {
 
         String trainersText = "";
         for (Trainer trainer: trainers){
-            trainersText += trainer.toString() + "\n\n";
+            trainersText += trainer.toString() + "\n";
         }
 
         return "Kurs: \n" +

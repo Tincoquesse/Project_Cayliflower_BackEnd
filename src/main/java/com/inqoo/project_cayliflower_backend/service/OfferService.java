@@ -43,7 +43,7 @@ public class OfferService {
 
         String content = "Drogi Kliencie,\n"
                 + "Dziękujemy za Twoje zamówienie!\n"
-                + "Zamówiłeś następujące kursy: \n"
+                + "Zamówiłeś następujące kursy: \n\n"
                 + trainingsText+ "\n"
                 + "Pozdrawiamy \n"
                 + "Kursy kalafior";
@@ -57,13 +57,5 @@ public class OfferService {
         message.setText(content);
 
         javaMailSender.send(message);
-
-    }
-
-    public static void main(String[] args) {
-        OfferService offerService = new OfferService(null, null);
-        Set<Training> trainings = new HashSet<>();
-        trainings.add(new Training("name", "test", BigDecimal.ONE, 23, new HashSet<>()));
-        offerService.sendEmail(new OfferPreparationRequestDTO(trainings, "kkkkm"));
     }
 }

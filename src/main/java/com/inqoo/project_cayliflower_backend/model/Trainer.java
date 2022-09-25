@@ -66,7 +66,7 @@ public class Trainer {
     @Override
     public String toString() {
         return
-                firstName + ", " +
+                firstName + "  " +
                 lastName + ", \n" +
                 "bio: " + bio + ". "
                 ;
