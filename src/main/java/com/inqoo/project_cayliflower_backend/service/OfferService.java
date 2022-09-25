@@ -32,6 +32,8 @@ public class OfferService {
         String fromAddress = "kursy.kalafior@gmail.com";
         String subject = "Oferta Szkoleń";
 
+
+
         String content = "Dear Customer,\n"
                 + "Thank you for Your order!\n"
                 + "Kursy kalafior";

@@ -78,4 +78,14 @@ public class Training {
         this.trainers.add(trainer);
     }
 
+    @Override
+    public String toString() {
+        return "Training{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", trainers=" + trainers +
+                ", duration=" + duration +
+                '}';
+    }
 }
